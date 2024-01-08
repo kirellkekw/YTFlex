@@ -120,7 +120,7 @@ Try to access the following URL in your browser:
 
 or if you're running it without a reverse proxy:
 
-`http://localhost:2002/yt_api/root`
+`http://localhost:2002/root`
 
 If you get a JSON response with the following content, then you are good to go!
 ```json
