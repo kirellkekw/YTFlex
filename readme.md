@@ -23,8 +23,8 @@ A simple API that downloads youtube videos to a server and returns a link to the
 
 * Python 3.10 (or higher)
 * FFmpeg
-* Docker (Optional, but recommended)
-* Nginx (Optional, but recommended)
+* Docker
+* Nginx
 
 
 For detailed instructions on how to install those, please refer to the following links:
@@ -62,9 +62,9 @@ pip install -r requirements.txt
 python main.py
 ```
 
-* At this point, the server should be running on port 2002 if not specified otherwise. Rest of the instructions assume that the server is running on port 2002.
+* At this point, the download server should be running on port 2002 if not specified otherwise. Rest of the instructions assume that the server is running on port 2002.
 
-## 5- (Optional) Run the server with Docker
+## 5- Run the server with Docker
 
 - Note: Tested on Podman backend, but should work with Docker as well.
 
@@ -78,7 +78,7 @@ sudo docker build -t yt_api:1.0.0 .
 sudo docker run -d -p 2002:2002 -v /designated/download/path/:/softdisk/beer/cdn_root/ yt_api:1.0.0
 ```
 
-### 6- (Optional) Run the CDN server with Nginx
+### 6- Run the CDN server with Nginx
 
 * We recommend using Nginx not only as CDN, but also as a reverse proxy for the API server. This will allow you to use a domain name instead of an IP address and also allow you to use HTTPS. This won't be covered in this guide, but you can find a lot of tutorials online on how to do this.
 * This guide will expect you to have Nginx installed and running on your machine.
