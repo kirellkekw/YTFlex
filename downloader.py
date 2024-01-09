@@ -1,16 +1,8 @@
 import yt_dlp
 import os
+from urllib.parse import quote
+from config import *
 
-# variables that you can change
-
-# add more values to provide more options, or remove some to provide less options
-res_list: list[int] = [1080, 720, 480, 360, 240, 144]
-
-# in megabytes, if a resolution is not available by this limitation, it will download the next best resolution
-filesize_limit: int = 100
-
-
-# actual code starts here
 
 class FilenameCollectorPP(yt_dlp.postprocessor.common.PostProcessor):
     """
@@ -63,15 +55,14 @@ def download_vids(urls: list[str] | str, preferred_res: str | int, download_dire
         if preferred_res < res_list[-1]:
             preferred_res = res_list[-1]
 
-    # this is the format string for yt-dlp
-    res_str = f"bestvideo[height<={preferred_res}][filesize<{filesize_limit}M]+bestaudio/best[height<={preferred_res}]"
-
     def format_the_title(title: str):
         # hot tip: if you're on windows, colons and backslashes are not allowed in filenames
-        # so we'll just replace them with nothing :)
+        # so we'll just remove them for our precious windows users
         title = title.replace(':', '')
         title = title.replace("\\", '')
-        # title = title.replace(" ", "_") # if spaces in filenames are not your thing, uncomment this line
+
+        # if spaces in filenames are not your thing, uncomment this line, the url will be encoded anyway
+        # title = title.replace(" ", "_")
 
         # cyrillic letters are often problematic in filenames and urls, so we'll just convert them to latin
         # got you covered russian bros
@@ -90,7 +81,7 @@ def download_vids(urls: list[str] | str, preferred_res: str | int, download_dire
         title = cyrillic_to_latin(title)
         return title
 
-    for url in urls:  # Normally we can pass in a list of urls to yt-dlp, but we'll just loop through them instead
+    for url in urls:  # Normally we can pass in a list of urls to yt-dlp, but we'll just loop through them instead for more control
         info = yt_dlp.YoutubeDL({"quiet": be_silent}).extract_info(
             url=url, download=False)  # we'll get the info about the video first, so we can format the title properly
 
@@ -101,6 +92,9 @@ def download_vids(urls: list[str] | str, preferred_res: str | int, download_dire
 
         # formatting right before downloading
         title = format_the_title(title)
+
+        # this is the format string for yt-dlp
+        res_str = f"bestvideo[height<={preferred_res}][filesize<{filesize_limit}M]+bestaudio/best[height<={preferred_res}]"
 
         # options for yt-dlp
         # this took me longer than i'd like to admit to figure out
@@ -118,10 +112,13 @@ def download_vids(urls: list[str] | str, preferred_res: str | int, download_dire
         ydl.add_post_processor(filename_collector)
         ydl.download([url])
 
+        # retrieve the filename and create the download link
         last_downloaded_dir = filename_collector.filenames[-1]
         filename: str = os.path.basename(last_downloaded_dir)
+        # encode the url with special characters to prevent errors
+        download_link = quote(f"http://5.178.111.177/cdn/{filename}")
         download_info = ({"title": title,
-                          "link": f"http://5.178.111.177/cdn/{filename.replace(' ', '%20')}",
+                          "link": download_link,
                           "message": f"{title} has been downloaded successfully",
                           "metadata": {"duration": duration, "thumbnail": thumbnail}})
 
