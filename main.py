@@ -2,6 +2,9 @@ from fastapi import FastAPI
 import uvicorn
 from downloader import download_vids
 from config import *
+import asyncio
+
+from check_file_age import purge_old_files
 
 app = FastAPI()
 
@@ -29,5 +32,19 @@ async def get_download_link(link: str, res: int):
 
     return dl_info
 
+
+async def side_process():
+    while True:
+        await asyncio.sleep(5)
+        with open("info.txt", "w") as f:
+            f.write("hello")
+
+
+@app.on_event("startup")
+async def startup_event():
+    asyncio.create_task(purge_old_files())
+
+
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    uvicorn.run("main:app", host="0.0.0.0", port=port,
+                loop="asyncio")
