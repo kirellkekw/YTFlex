@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 import uvicorn
 from downloader import download_vids
+from config import *
 
 app = FastAPI()
 
@@ -21,7 +22,7 @@ async def root():
 @app.get("/download")
 async def get_download_link(link: str, res: int):
     raw_dl_info = download_vids(urls=link, preferred_res=res,
-                                download_directory="/softdisk/beer/cdn_root/")
+                                download_directory=download_directory)
 
     # not actually needed, but for future use when error handling is implemented
     dl_info = DownloadInfo(raw_dl_info)
@@ -29,4 +30,4 @@ async def get_download_link(link: str, res: int):
     return dl_info
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=2002)
+    uvicorn.run(app, host="0.0.0.0", port=port)
