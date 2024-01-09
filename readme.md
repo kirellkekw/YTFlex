@@ -75,7 +75,7 @@ sudo docker build -t yt_api:1.0.0 .
 
 ### 5.2- Run the image as a container
 ```bash
-sudo docker run -d -p 2002:2002 -v /designated/download/path/:/softdisk/beer/cdn_root/ yt_api:1.0.0
+sudo docker run -d -p 2002:2002 -v /designated/download/path/:./downloads yt_api:1.0.0
 ```
 
 ### 6- Run the CDN server with Nginx
@@ -136,9 +136,9 @@ If you get a JSON response with the following content, then you are good to go!
 - [x] Add support for Docker
 - [x] Add support for Nginx
 - [x] Add CDN support
+- [x] Add option to purge files after a certain amount of time
 - [ ] Add support for Postgres for better scalability
 - [ ] Anonymize the file access links
-- [ ] Add option to purge files after a certain amount of time
 - [ ] Add option to download mp3 files
 - [ ] Add option to download playlists
 - [ ] Add API key support for uncapped file size and higher resolution
