@@ -1,6 +1,6 @@
-# yt_api
+# YTFlex
 <div>
-<img src="https://cdn.discordapp.com/attachments/889091145349623848/1193330729157922977/IMG_6589.png?ex=65ac52d8&is=6599ddd8&hm=7484a7c3b209a61d041556ba205946d5a4de355a8d0f715f01bdcc4151816250&" alt="gondola" style="width: 300px;align:center;" />
+<img src="https://cdn.discordapp.com/attachments/889091145349623848/1193330729157922977/IMG_6589.png?ex=65ac52d8&is=6599ddd8&hm=7484a7c3b209a61d041556ba205946d5a4de355a8d0f715f01bdcc4151816250&" alt="yt_api" style="width: 300px;align:center;" />
 </div>
 
 # Description
@@ -19,7 +19,7 @@ A simple API that downloads youtube videos to a server and returns a link to the
 
 # Installation
 
-## Download the dependencies
+## 1- Download the dependencies
 
 * Python 3.10 (or higher)
 * FFmpeg
@@ -142,6 +142,6 @@ If you get a JSON response with the following content, then you are good to go!
 - [ ] Add option to download mp3 files
 - [ ] Add option to download playlists
 - [ ] Add API key support for uncapped file size and higher resolution
-- [ ] Add option to choose when a file will be purged
+- [ ] Add option to choose when a file will be purged to user
 - [ ] Add a frontend
 - [ ] Add a mechanism to limit the number of concurrent downloads per IP to prevent abuse
