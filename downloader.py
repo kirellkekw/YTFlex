@@ -79,11 +79,25 @@ def download_vids(urls: list[str] | str, preferred_res: str | int, download_dire
             }
             return ''.join(CYRILLIC_TO_LATIN_MAP.get(char.lower(), char) for char in text)
         title = cyrillic_to_latin(title)
+
         return title
 
+    # this is the format string for yt-dlp
+    res_str = f"bestvideo[height<={preferred_res}][filesize<{filesize_limit}M]+bestaudio/best[height<={preferred_res}]"
+
+    # options for yt-dlp
+    # this took me longer than i'd like to admit to figure out
+    ydl_opts = {
+        "outtmpl": os.path.join(download_directory, f"{title}-%(height)sp.%(ext)s"),
+        "windowsfilenames": True,
+        "format": res_str,
+        "quiet": be_silent
+    }
+
     for url in urls:  # Normally we can pass in a list of urls to yt-dlp, but we'll just loop through them instead for more control
+        # we'll get the info about the video first, so we can format the title properly
         info = yt_dlp.YoutubeDL({"quiet": be_silent}).extract_info(
-            url=url, download=False)  # we'll get the info about the video first, so we can format the title properly
+            url=url, download=False)
 
         # get the info we need
         title = info["title"]
@@ -93,34 +107,41 @@ def download_vids(urls: list[str] | str, preferred_res: str | int, download_dire
         # formatting right before downloading
         title = format_the_title(title)
 
-        # this is the format string for yt-dlp
-        res_str = f"bestvideo[height<={preferred_res}][filesize<{filesize_limit}M]+bestaudio/best[height<={preferred_res}]"
+        # check if the file already exists
+        # if it does, we'll skip downloading it
+        # we don't know the file extension yet, so we'll just check if the file exists without the extension
+        # and if it does, we'll skip downloading it
+        def file_exists(file_address):
+            """Checks if the file exists in the download directory. Returns the filename if it does, False if it doesn't"""
+            # not the most efficient way, but it works
+            for file in os.listdir(download_directory):
+                # check if the file exists without the extension
+                if file.startswith(file_address + "."):
+                    return file
+            return False
 
-        # options for yt-dlp
-        # this took me longer than i'd like to admit to figure out
-        ydl_opts = {
-            "outtmpl": os.path.join(download_directory, f"{title}s-%(height)sp.%(ext)s"),
-            "windowsfilenames": True,
-            "format": res_str,
-            "quiet": be_silent
-        }
+        file = file_exists(title)
 
-        # download the video
-        # add a post processor to get the filename of the downloaded video
-        filename_collector = FilenameCollectorPP()
-        ydl = yt_dlp.YoutubeDL(ydl_opts)
-        ydl.add_post_processor(filename_collector)
-        ydl.download([url])
+        if file:
+            # if the file exists, we'll just skip downloading it
+            # and return the filename
+            filename = os.path.basename(filename)
+        else:
+            # download the video
+            # add a post processor to get the filename of the downloaded video
+            filename_collector = FilenameCollectorPP()
+            ydl = yt_dlp.YoutubeDL(ydl_opts)
+            ydl.add_post_processor(filename_collector)
+            ydl.download([url])
+            last_downloaded_dir = filename_collector.filenames[-1]
+            filename: str = os.path.basename(last_downloaded_dir)
 
-        # retrieve the filename and create the download link
-        last_downloaded_dir = filename_collector.filenames[-1]
-        filename: str = os.path.basename(last_downloaded_dir)
         # encode the url with special characters to prevent errors
-        download_link = quote(f"http://5.178.111.177/cdn/{filename}")
-        download_info = ({"title": title,
-                          "link": download_link,
-                          "message": f"{title} has been downloaded successfully",
-                          "metadata": {"duration": duration, "thumbnail": thumbnail}})
+        download_link = quote(f"http://{ip_or_domain}/cdn/{filename}")
+        download_info = ({
+            "link": download_link,
+            "message": f"{title} has been downloaded successfully",
+            "metadata": {"duration": duration, "thumbnail": thumbnail, "filename": filename, "title": title}})
 
     return download_info  # return the info about the downloaded videos for further use
 
