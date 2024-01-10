@@ -9,14 +9,6 @@ from check_file_age import purge_old_files
 app = FastAPI()
 
 
-class DownloadInfo():  # download info model
-    def __init__(self, info: dict):
-        self.title = info['title']
-        self.link = info['link']
-        self.message = info['message']
-        self.metadata = info['metadata']
-
-
 @app.get("/root")
 async def root():
     return {"message": "Hello World"}
@@ -27,17 +19,7 @@ async def get_download_link(link: str, res: int):
     raw_dl_info = download_vids(urls=link, preferred_res=res,
                                 download_directory=download_directory)
 
-    # not actually needed, but for future use when error handling is implemented
-    dl_info = DownloadInfo(raw_dl_info)
-
-    return dl_info
-
-
-async def side_process():
-    while True:
-        await asyncio.sleep(5)
-        with open("info.txt", "w") as f:
-            f.write("hello")
+    return raw_dl_info
 
 
 @app.on_event("startup")
