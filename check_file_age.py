@@ -5,6 +5,7 @@ from config import *
 
 
 async def purge_old_files():
+    """Purge files older than max_file_age defined in config.py from download_directory"""
     print("File purge subprocess started.")
     while True:
         await asyncio.sleep(60)  # every minute
