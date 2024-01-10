@@ -21,7 +21,7 @@ A simple API that downloads youtube videos to a server and returns a link to the
 
 ## 1- Download the dependencies
 
-* Python 3.10 (or higher)
+* Python 3.11 (or higher)
 * FFmpeg
 * Docker
 * Nginx
@@ -75,7 +75,7 @@ sudo docker build -t yt_api:1.0.0 .
 
 ### 5.2- Run the image as a container
 ```bash
-sudo docker run -d -p 2002:2002 -v /designated/download/path/:./downloads yt_api:1.0.0
+sudo docker run -d -p 2002:2002 -v /designated/download/path/:/downloads yt_api:1.0.0
 ```
 
 ### 6- Run the CDN server with Nginx
@@ -87,24 +87,24 @@ sudo docker run -d -p 2002:2002 -v /designated/download/path/:./downloads yt_api
 ```nginx
 # use your favorite text editor add the following to your nginx.conf as you see fit
 events {}
-      http {
-        server {
-          listen 80; # default port for http, you can change this to 443 for https if you have a certificate
-          server_name {your-domain-name} # if you don't have a domain name, you can use your ip address instead
-        };
-
-          location /yt_api/ {
-              proxy_pass http://{your-ip-address}:2002/;
-              proxy_set_header Host $host;
-              proxy_set_header X-Real-IP $remote_addr;
-              proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-              proxy_set_header X-Forwarded-Proto $scheme;
-          }
-          location /cdn/ {
-              alias /designated/download/path/;
-              expires 12h;  # Set cache expiration for 12 hours
-          }
-        }
+http {
+	server {
+		listen 80; 
+		server_name {your-ip-address};
+	
+		location /yt_api/ {
+			proxy_pass http://your-ip-address:2002/; # add your ip address to here
+			proxy_set_header Host $host;
+			proxy_set_header X-Real-IP $remote_addr;
+			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+			proxy_set_header X-Forwarded-Proto $scheme;
+		}
+		location /cdn/ {
+			alias /designated/download/path/;
+			expires 1h;
+		}
+	}
+}
 ```
 
 ### 6.2- Restart Nginx
@@ -116,7 +116,7 @@ sudo systemctl restart nginx
 ### 6.3- Test the server
 Try to access the following URL in your browser:
 
-`http://{your-ip-address}/yt_api/root`
+`http://localhost/yt_api/root`
 
 or if you're running it without a reverse proxy:
 
