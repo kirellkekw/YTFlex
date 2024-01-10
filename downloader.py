@@ -85,15 +85,6 @@ def download_vids(urls: list[str] | str, preferred_res: str | int, download_dire
     # this is the format string for yt-dlp
     res_str = f"bestvideo[height<={preferred_res}][filesize<{filesize_limit}M]+bestaudio/best[height<={preferred_res}]"
 
-    # options for yt-dlp
-    # this took me longer than i'd like to admit to figure out
-    ydl_opts = {
-        "outtmpl": os.path.join(download_directory, f"{title}-%(height)sp.%(ext)s"),
-        "windowsfilenames": True,
-        "format": res_str,
-        "quiet": be_silent
-    }
-
     for url in urls:  # Normally we can pass in a list of urls to yt-dlp, but we'll just loop through them instead for more control
         # we'll get the info about the video first, so we can format the title properly
         info = yt_dlp.YoutubeDL({"quiet": be_silent}).extract_info(
@@ -104,13 +95,23 @@ def download_vids(urls: list[str] | str, preferred_res: str | int, download_dire
         thumbnail = info["thumbnail"]
         duration = info["duration"]
 
-        # formatting right before downloading
+        # formatting before creating the options for download
         title = format_the_title(title)
+
+        # options for yt-dlp
+        # this took me longer than i'd like to admit to figure out
+        ydl_opts = {
+            "outtmpl": os.path.join(download_directory, f"{title}-%(height)sp.%(ext)s"),
+            "windowsfilenames": True,
+            "format": res_str,
+            "quiet": be_silent
+        }
 
         # check if the file already exists
         # if it does, we'll skip downloading it
         # we don't know the file extension yet, so we'll just check if the file exists without the extension
         # and if it does, we'll skip downloading it
+
         def file_exists(file_address):
             """Checks if the file exists in the download directory. Returns the filename if it does, False if it doesn't"""
             # not the most efficient way, but it works
@@ -137,7 +138,7 @@ def download_vids(urls: list[str] | str, preferred_res: str | int, download_dire
             filename: str = os.path.basename(last_downloaded_dir)
 
         # encode the url with special characters to prevent errors
-        download_link = quote(f"http://{ip_or_domain}/cdn/{filename}")
+        download_link = f"http://{ip_or_domain}/cdn/{quote(filename)}"
         download_info = ({
             "link": download_link,
             "message": f"{title} has been downloaded successfully",
@@ -148,5 +149,5 @@ def download_vids(urls: list[str] | str, preferred_res: str | int, download_dire
 
 if __name__ == "__main__":
     # wanna give it a try?
-    download_vids("https://www.youtube.com/watch?v=_o8Qqfu1pwQ",
-                  144, "./downloads")
+    download_vids("https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                  240, "./downloads")
