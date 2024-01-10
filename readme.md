@@ -1,10 +1,16 @@
 # YTFlex
+![GitHub license](https://img.shields.io/github/license/kirellkekw/YTFlex?style=for-the-badge)
+
+
 <div>
 <img src="https://cdn.discordapp.com/attachments/889091145349623848/1193330729157922977/IMG_6589.png?ex=65ac52d8&is=6599ddd8&hm=7484a7c3b209a61d041556ba205946d5a4de355a8d0f715f01bdcc4151816250&" alt="yt_api" style="width: 300px;align:center;" />
 </div>
 
+*a better image is required here, pull requests are welcome
+
 # Description
-A simple API that downloads youtube videos to a server and returns a link to the video.
+Ready-to-deploy API server for downloading YouTube videos and serving them as a CDN.
+
 
 # Powered by:
 
@@ -26,7 +32,6 @@ A simple API that downloads youtube videos to a server and returns a link to the
 * Docker
 * Nginx
 
-
 For detailed instructions on how to install those, please refer to the following links:
 
 - [Python Downloads](https://www.python.org/downloads/)
@@ -43,6 +48,7 @@ cd yt_api
 ```
 
 ## 3- Install the dependencies
+
 ### 3.1- Create a virtual environment and install the dependencies
 ```bash
 python -m venv venv
@@ -78,7 +84,7 @@ sudo docker build -t yt_api:1.0.0 .
 sudo docker run -d -p 2002:2002 -v /designated/download/path/:/downloads yt_api:1.0.0
 ```
 
-### 6- Run the CDN server with Nginx
+## 6- Run the CDN server with Nginx
 
 * We recommend using Nginx not only as CDN, but also as a reverse proxy for the API server. This will allow you to use a domain name instead of an IP address and also allow you to use HTTPS. This won't be covered in this guide, but you can find a lot of tutorials online on how to do this.
 * This guide will expect you to have Nginx installed and running on your machine.
@@ -100,7 +106,7 @@ http {
 			proxy_set_header X-Forwarded-Proto $scheme;
 		}
 		location /cdn/ {
-			alias /designated/download/path/;
+			alias /designated/download/path/; # change this to your download path
 			expires 1h;
 		}
 	}
@@ -130,14 +136,14 @@ If you get a JSON response with the following content, then you are good to go!
 # TODO 
 ### (in no particular order)
 
-- [x] Write a proper readme(kekw)
 - [x] Add support for multiple file resolutions
 - [x] Add option to limit the file size of the downloaded files
-- [x] Add support for Docker
-- [x] Add support for Nginx
+- [x] Add support for Docker for easier deployment
+- [x] Add support for Nginx for reverse proxying and CDN
 - [x] Add CDN support
+- [x] Write a proper readme(kekw)
 - [x] Add option to purge files after a certain amount of time
-- [ ] Add support for Postgres for better scalability
+- [ ] Add support for Postgres for various database operations
 - [ ] Anonymize the file access links
 - [ ] Add option to download mp3 files
 - [ ] Add option to download playlists
