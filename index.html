@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple API Request</title>
+</head>
+
+<body>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // API endpoint
+            const apiUrl = 'http://5.178.111.177/yt_api/root';
+
+            // Fetch data from the API
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Print the API response to the console
+                    console.log('API Response:', data);
+                })
+                .catch(error => {
+                    // Handle errors
+                    console.error('Error fetching data:', error);
+                });
+        });
+    </script>
+
+</body>
+
+</html>
