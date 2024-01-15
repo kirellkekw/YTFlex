@@ -139,7 +139,7 @@ If you get a JSON response with the following content, then you are good to go!
 - [x] Add CDN support
 - [x] Write a proper readme(ironic, isn't it?)
 - [x] Add option to purge files after a certain amount of time
-- [x] Add option to download mp3 files(this is actually easier than video files, but i haven't gotten around to it yet)
+- [x] Add option to download mp3 files(this is actually easier than video files ~~,but i haven't gotten around to it yet~~)
 - [ ] Add support for Postgres for various database operations
 - [ ] Anonymize the file access links
 - [ ] Add option to download playlists
