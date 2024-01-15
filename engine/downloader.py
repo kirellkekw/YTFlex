@@ -56,7 +56,7 @@ def format_the_title(title: str, remove_spaces: bool = False):
     return title
 
 
-def file_exists(file_address: str):
+def file_exists(file_address: str, download_path: str = "./downloads"):
     """Checks if the file exists in the download directory. Returns the filename if it does, False if it doesn't"""
     # not the most efficient way, but it works
     for file in os.listdir(download_path):
@@ -67,7 +67,7 @@ def file_exists(file_address: str):
     return False
 
 
-def download_audios(urls: list[str] | str, download_directory: str = "./downloads", be_silent: bool = False):
+def download_audios(urls: list[str] | str, download_directory: str = "./downloads", be_silent: bool = False, max_file_size: int = 100, ip_or_domain: str = "localhost"):
     """
     Downloads audios from youtube using yt-dlp
     urls: list of urls to download, or a single url as a string. if you pass in a list, all of them will be downloaded
@@ -97,8 +97,8 @@ def download_audios(urls: list[str] | str, download_directory: str = "./download
 
         # options for yt-dlp
         ydl_opts = {
-            'format': 'bestaudio/best',
-            "outtmpl": f"{title}",
+            'format': quality_str,
+            "outtmpl": os.path.join(download_directory, f"{title}"),
             "postprocessors":
             [{"key": "FFmpegExtractAudio", "preferredcodec": "mp3",
                 "preferredquality": "192"}],
@@ -108,12 +108,12 @@ def download_audios(urls: list[str] | str, download_directory: str = "./download
         # if it does, we'll skip downloading it
         # we don't know the file extension yet, so we'll just check if the file exists without the extension
         # and if it does, we'll skip downloading it
-        file = file_exists(title)
+        file = file_exists(title, download_directory)
 
         if file:
             # if the file exists, we'll just skip downloading it
             # and return the filename
-            filename = os.path.basename(filename)
+            filename = os.path.basename(file)
         else:
             # download the audio
             # add a post processor to get the filename of the downloaded video
@@ -133,13 +133,15 @@ def download_audios(urls: list[str] | str, download_directory: str = "./download
     return download_info  # return the info about the downloaded audios for api to process
 
 
-def download_videos(urls: list[str] | str, preferred_res: str | int, download_directory: str = "./downloads", be_silent: bool = False):
+def download_videos(urls: list[str] | str, preferred_res: str | int = 720, download_directory: str = "./downloads", be_silent: bool = False, max_file_size: int = 100, ip_or_domain: str = "localhost", res_list: list[int] = [1080, 720, 480, 360, 240, 144]):
     """
     Downloads videos from youtube using yt-dlp
     urls: list of urls to download, or a single url as a string. if you pass in a list, the preferred_res will be applied to all of them
     preferred_res: the preferred resolution to download the videos in, for a list of supported resolutions, see res_list
     be_silent: whether to print out the yt-dlp output or not
     """
+    if isinstance(urls, str):
+        urls = [urls]  # allows for single url to be passed in
 
     if isinstance(preferred_res, str):
         # someone might have accidentally passed with p at the end
@@ -192,12 +194,12 @@ def download_videos(urls: list[str] | str, preferred_res: str | int, download_di
         # if it does, we'll skip downloading it
         # we don't know the file extension yet, so we'll just check if the file exists without the extension
         # and if it does, we'll skip downloading it
-        file = file_exists(title)
+        file = file_exists(title+"-"+str(preferred_res)+"p")
 
         if file:
             # if the file exists, we'll just skip downloading it
             # and return the filename
-            filename = os.path.basename(filename)
+            filename = os.path.basename(file)
         else:
             # download the video
             # add a post processor to get the filename of the downloaded video
@@ -220,5 +222,5 @@ def download_videos(urls: list[str] | str, preferred_res: str | int, download_di
 
 if __name__ == "__main__":
     # wanna give it a try?
-    download_videos("https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                    240, "./downloads")
+    download_videos(urls="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+                    download_directory="./downloads")
