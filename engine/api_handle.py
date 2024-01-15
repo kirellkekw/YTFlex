@@ -2,7 +2,7 @@ from fastapi import FastAPI
 import asyncio
 
 from config import *
-from engine.downloader import download_videos
+from engine.downloader import download_videos, download_audios
 from engine.purge_old_files import purge_old_files
 
 app = FastAPI()
@@ -16,7 +16,7 @@ async def root():
 
 @app.get("/download/audio")
 async def audio_download(link: str):
-    raw_dl_info = download_videos(
+    raw_dl_info = download_audios(
         urls=link, download_directory=download_path)
 
     return raw_dl_info
