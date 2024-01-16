@@ -88,7 +88,7 @@ def download_audios(urls: list[str] | str, download_directory: str = "./download
         # we'll get the info about the video first, so we can format the title properly
         try:
             info = yt_dlp.YoutubeDL({"quiet": not show_output}).extract_info(
-            url=url, download=False)
+                url=url, download=False)
         except yt_dlp.utils.DownloadError:
             # if the video is unavailable, we'll just skip it
             download_info += [{"message": "This video is set to private or unavailable."}]
@@ -195,7 +195,7 @@ def download_videos(urls: list[str] | str, preferred_res: str | int = 720, downl
             # if the video is unavailable, we'll just skip it
             download_info += [{"message": "This video is set to private or unavailable."}]
             continue
-        
+
         # get the info we need
         title = info["title"]
         thumbnail = info["thumbnail"]
