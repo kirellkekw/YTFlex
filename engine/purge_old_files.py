@@ -1,7 +1,7 @@
 import asyncio
 import os
 import time
-from config import *
+from config import download_path, max_file_age
 
 
 async def purge_old_files():
