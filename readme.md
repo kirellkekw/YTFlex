@@ -141,7 +141,7 @@ If you get a JSON response with the following content, then you are good to go!
 - [x] Add option to purge files after a certain amount of time
 - [x] Add option to download mp3 files(this is actually easier than video files ~~,but i haven't gotten around to it yet~~)
 - [x] Handle multiple file links more gracefully
-- [ ] Add graceful error handling for invalid links
+- [x] Add graceful error handling for invalid links
 - [ ] Add support for Postgres for various database operations
 - [ ] Anonymize the file access links
 - [ ] Add option to download playlists

@@ -86,8 +86,13 @@ def download_audios(urls: list[str] | str, download_directory: str = "./download
     download_info = []
     for url in urls:  # Normally we can pass in a list of urls to yt-dlp, but we'll just loop through them instead for more control
         # we'll get the info about the video first, so we can format the title properly
-        info = yt_dlp.YoutubeDL({"quiet": not show_output}).extract_info(
+        try:
+            info = yt_dlp.YoutubeDL({"quiet": not show_output}).extract_info(
             url=url, download=False)
+        except yt_dlp.utils.DownloadError:
+            # if the video is unavailable, we'll just skip it
+            download_info += [{"message": "This video is set to private or unavailable."}]
+            continue
 
         # get the info we need
         title = info["title"]
@@ -183,9 +188,14 @@ def download_videos(urls: list[str] | str, preferred_res: str | int = 720, downl
     download_info = []
     for url in urls:  # Normally we can pass in a list of urls to yt-dlp, but we'll just loop through them instead for more control
         # we'll get the info about the video first, so we can format the title properly
-        info = yt_dlp.YoutubeDL({"quiet": not show_output}).extract_info(
-            url=url, download=False)
-
+        try:
+            info = yt_dlp.YoutubeDL({"quiet": not show_output}).extract_info(
+                url=url, download=False)
+        except yt_dlp.utils.DownloadError:
+            # if the video is unavailable, we'll just skip it
+            download_info += [{"message": "This video is set to private or unavailable."}]
+            continue
+        
         # get the info we need
         title = info["title"]
         thumbnail = info["thumbnail"]
@@ -237,6 +247,6 @@ if __name__ == "__main__":
     # wanna give it a try?
     # download_videos(urls="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
     a = download_videos(
-        urls=["https://www.youtube.com/watch?v=By_T39ENlkg", "https://www.youtube.com/watch?v=my_tctQW4m0"])
+        urls=["https://www.youtube.com/watch?v=By_T3kg", "https://www.youtube.com/watch?v=dQw4w9WgXcQ"])
     import jsonpickle
     print(jsonpickle.encode(a))
