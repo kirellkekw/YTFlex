@@ -1,7 +1,7 @@
 import yt_dlp
 import os
 from urllib.parse import quote
-from config import *
+# from config import *
 
 
 class FilenameCollectorPP(yt_dlp.postprocessor.common.PostProcessor):
@@ -82,6 +82,7 @@ def download_audios(urls: list[str] | str, download_directory: str = "./download
     # we'll just download the best audio quality available as long as it's not a gigantic file
     quality_str = f"bestaudio/best[filesize<{int(max_file_size/5)}M]"
 
+    download_info = []
     for url in urls:  # Normally we can pass in a list of urls to yt-dlp, but we'll just loop through them instead for more control
         # we'll get the info about the video first, so we can format the title properly
         info = yt_dlp.YoutubeDL({"quiet": be_silent}).extract_info(
@@ -89,8 +90,14 @@ def download_audios(urls: list[str] | str, download_directory: str = "./download
 
         # get the info we need
         title = info["title"]
-        thumbnail = info["thumbnail"]
-        duration = info["duration"]
+        try:
+            thumbnail = info["thumbnail"]
+        except KeyError:
+            thumbnail = ""
+        try:
+            duration = info["duration"]
+        except KeyError:
+            duration = -1
 
         # formatting before creating the options for download
         title = format_the_title(title)
@@ -126,9 +133,8 @@ def download_audios(urls: list[str] | str, download_directory: str = "./download
 
         # encode the url with special characters to prevent errors
         download_link = f"http://{ip_or_domain}/cdn/{quote(filename)}"
-        download_info = ({"link": download_link,
-                          "message": f"{title} has been downloaded successfully",
-                          "metadata": {"duration": duration, "thumbnail": thumbnail, "filename": filename, "title": title}})
+        download_info += [{"link": download_link,
+                          "message": f"{title} has been downloaded successfully", "metadata": {"duration": duration, "thumbnail": thumbnail, "title": title, "filename": filename, "extension": filename.split(".")[-1]}}]
 
     return download_info  # return the info about the downloaded audios for api to process
 
@@ -168,6 +174,7 @@ def download_videos(urls: list[str] | str, preferred_res: str | int = 720, downl
     # this is the format string for yt-dlp
     res_str = f"bestvideo[height<={preferred_res}][filesize<{max_file_size}M]+bestaudio/best[height<={preferred_res}][filesize<{int(max_file_size/5)}M]"
 
+    download_info = []
     for url in urls:  # Normally we can pass in a list of urls to yt-dlp, but we'll just loop through them instead for more control
         # we'll get the info about the video first, so we can format the title properly
         info = yt_dlp.YoutubeDL({"quiet": be_silent}).extract_info(
@@ -212,15 +219,18 @@ def download_videos(urls: list[str] | str, preferred_res: str | int = 720, downl
 
         # encode the url with special characters to prevent errors
         download_link = f"http://{ip_or_domain}/cdn/{quote(filename)}"
-        download_info = ({
+        download_info += [{
             "link": download_link,
             "message": f"{title} has been downloaded successfully",
-            "metadata": {"duration": duration, "thumbnail": thumbnail, "filename": filename, "title": title}})
+            "metadata": {"duration": duration, "thumbnail": thumbnail, "filename": filename, "title": title, "resolution": filename.split(".")[-2].split("-")[-1], "extension": filename.split(".")[-1], }}]
 
     return download_info  # return the info about the downloaded videos for api to process
 
 
 if __name__ == "__main__":
     # wanna give it a try?
-    download_videos(urls="https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-                    download_directory="./downloads")
+    # download_videos(urls="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+    a = download_videos(
+        urls=["https://www.youtube.com/watch?v=By_T39ENlkg", "https://www.youtube.com/watch?v=my_tctQW4m0"])
+    import jsonpickle
+    print(jsonpickle.encode(a))
