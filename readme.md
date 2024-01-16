@@ -61,7 +61,7 @@ cd yt_api
 | `port` | The port the API server will listen on. | `2002` | `int` |
 | `ip_or_domain` | The IP address or domain name the API server will listen on. | `5.178.111.177` | `str` |
 | `max_file_age` | The maximum age of a file in seconds before it gets deleted. | `3600` | `int` |
-
+| `show_yt_dlp_output` | Decides if yt_dlp output is printed to the console or not. | `True` | `bool` |
 
 ## 3- Run the server with Docker
 

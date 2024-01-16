@@ -17,3 +17,6 @@ ip_or_domain = "5.178.111.177"
 
 # in seconds, 3600 = 1 hour, 86400 = 1 day, 604800 = 1 week, 2592000 = 1 month
 max_file_age = 3600
+
+# sets if download jobs should be silent or not. if set to False, the download will be run in silent mode.
+show_yt_dlp_output = True
