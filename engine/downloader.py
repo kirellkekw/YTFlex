@@ -1,7 +1,6 @@
 import yt_dlp
 import os
 from urllib.parse import quote
-# from config import *
 
 
 class FilenameCollectorPP(yt_dlp.postprocessor.common.PostProcessor):
@@ -67,12 +66,14 @@ def file_exists(file_address: str, download_path: str = "./downloads"):
     return False
 
 
-def download_audios(urls: list[str] | str, download_directory: str = "./downloads", be_silent: bool = False, max_file_size: int = 100, ip_or_domain: str = "localhost"):
+def download_audios(urls: list[str] | str, download_directory: str = "./downloads", show_output: bool = True, max_file_size: int = 100, ip_or_domain: str = "localhost"):
     """
     Downloads audios from youtube using yt-dlp
     urls: list of urls to download, or a single url as a string. if you pass in a list, all of them will be downloaded
     download_directory: the directory to download the audio files to
-    be_silent: whether to print out the yt-dlp output or not
+    show_output: whether to print out the yt-dlp output or not
+    max_file_size: the maximum filesize of the audio in megabytes
+    ip_or_domain: the ip or domain of the server, used to generate the download link
     """
 
     if isinstance(urls, str):
@@ -85,7 +86,7 @@ def download_audios(urls: list[str] | str, download_directory: str = "./download
     download_info = []
     for url in urls:  # Normally we can pass in a list of urls to yt-dlp, but we'll just loop through them instead for more control
         # we'll get the info about the video first, so we can format the title properly
-        info = yt_dlp.YoutubeDL({"quiet": be_silent}).extract_info(
+        info = yt_dlp.YoutubeDL({"quiet": not show_output}).extract_info(
             url=url, download=False)
 
         # get the info we need
@@ -106,6 +107,8 @@ def download_audios(urls: list[str] | str, download_directory: str = "./download
         ydl_opts = {
             'format': quality_str,
             "outtmpl": os.path.join(download_directory, f"{title}"),
+            "windowsfilenames": True,
+            "quiet": not show_output,
             "postprocessors":
             [{"key": "FFmpegExtractAudio", "preferredcodec": "mp3",
                 "preferredquality": "192"}],
@@ -139,12 +142,15 @@ def download_audios(urls: list[str] | str, download_directory: str = "./download
     return download_info  # return the info about the downloaded audios for api to process
 
 
-def download_videos(urls: list[str] | str, preferred_res: str | int = 720, download_directory: str = "./downloads", be_silent: bool = False, max_file_size: int = 100, ip_or_domain: str = "localhost", res_list: list[int] = [1080, 720, 480, 360, 240, 144]):
+def download_videos(urls: list[str] | str, preferred_res: str | int = 720, download_directory: str = "./downloads", show_output: bool = True, max_file_size: int = 100, ip_or_domain: str = "localhost", res_list: list[int] = [1080, 720, 480, 360, 240, 144]):
     """
     Downloads videos from youtube using yt-dlp
     urls: list of urls to download, or a single url as a string. if you pass in a list, the preferred_res will be applied to all of them
     preferred_res: the preferred resolution to download the videos in, for a list of supported resolutions, see res_list
-    be_silent: whether to print out the yt-dlp output or not
+    show_output: whether to print out the yt-dlp output or not
+    max_file_size: the maximum filesize of the video in megabytes
+    ip_or_domain: the ip or domain of the server, used to generate the download link
+    res_list: the list of resolutions to choose from.
     """
     if isinstance(urls, str):
         urls = [urls]  # allows for single url to be passed in
@@ -177,7 +183,7 @@ def download_videos(urls: list[str] | str, preferred_res: str | int = 720, downl
     download_info = []
     for url in urls:  # Normally we can pass in a list of urls to yt-dlp, but we'll just loop through them instead for more control
         # we'll get the info about the video first, so we can format the title properly
-        info = yt_dlp.YoutubeDL({"quiet": be_silent}).extract_info(
+        info = yt_dlp.YoutubeDL({"quiet": not show_output}).extract_info(
             url=url, download=False)
 
         # get the info we need
@@ -194,7 +200,7 @@ def download_videos(urls: list[str] | str, preferred_res: str | int = 720, downl
             "outtmpl": os.path.join(download_directory, f"{title}-%(height)sp.%(ext)s"),
             "windowsfilenames": True,
             "format": res_str,
-            "quiet": be_silent
+            "quiet": not show_output
         }
 
         # check if the file already exists

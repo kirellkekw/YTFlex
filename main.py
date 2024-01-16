@@ -1,6 +1,6 @@
 import uvicorn
 
-from config import *
+from config import port
 
 
 if __name__ == "__main__":
