@@ -21,7 +21,8 @@ async def root():
 
 
 @app.get("/download/audio")
-async def audio_download(link: list[str] | str):
+async def audio_download(link: str):
+    link = link.split(",")
     raw_dl_info = download_audios(urls=link, download_directory=download_path,
                                   show_output=show_yt_dlp_output, max_file_size=max_file_size, ip_or_domain=ip_or_domain)
 
@@ -29,7 +30,8 @@ async def audio_download(link: list[str] | str):
 
 
 @app.get("/download/video")
-async def video_download(link: list[str] | str, res: int):
+async def video_download(link: str, res: int):
+    link = link.split(",")
     raw_dl_info = download_videos(urls=link, preferred_res=res, download_directory=download_path,
                                   show_output=show_yt_dlp_output, max_file_size=max_file_size, ip_or_domain=ip_or_domain, res_list=res_list)
 
