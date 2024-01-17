@@ -137,6 +137,7 @@ If you get a JSON response with the following content, then you are good to go!
 - [x] Add support for Docker for easier deployment
 - [x] Add support for Nginx for reverse proxying and CDN
 - [x] Add CDN support
+- [x] Add a control block before downloads to prevent redownloading same files
 - [x] Write a proper readme(ironic, isn't it?)
 - [x] Add option to purge files after a certain amount of time
 - [x] Add option to download mp3 files(this is actually easier than video files ~~,but i haven't gotten around to it yet~~)
