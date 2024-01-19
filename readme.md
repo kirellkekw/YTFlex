@@ -99,14 +99,15 @@ http {
 	server {
 		listen 80; 
 		server_name your-ip-address; # add your ip address to here, or your domain name if you have one
-	
+
 		location /yt_api/ {
-			proxy_pass http://your-ip-address:2002/; # add your ip address to here
+			proxy_pass http://127.0.0.1:2002/;
 			proxy_set_header Host $host;
 			proxy_set_header X-Real-IP $remote_addr;
 			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-			proxy_set_header X-Forwarded-Proto $scheme;
+ 			proxy_set_header X-Forwarded-Proto $scheme;		
 		}
+
 		location /cdn/ {
 			alias /designated/download/path/; # change this to your download path
 			expires 1h;
