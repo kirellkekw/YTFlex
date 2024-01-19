@@ -7,8 +7,15 @@
 *a better image is required here, pull requests are welcome
 
 # Description
-Deployment ready, easy to use, and fast YouTube downloader API written in Python using FastAPI.
+Deployment ready, easy to use and fast YouTube downloader API written in Python with CDN setup guide.
 
+## To see the project live, check the example links below:
+
+http://5.178.111.177/yt_api/root # to test if the server is running
+
+http://5.178.111.177/yt_api/download/audio?link=https://www.youtube.com/watch?v=3r-qDvD3F3c # to download audio
+
+http://5.178.111.177/yt_api/download/video?link=https://www.youtube.com/watch?v=3r-qDvD3F3c&res=240 # to download video
 
 # Powered by:
 
@@ -20,6 +27,7 @@ Deployment ready, easy to use, and fast YouTube downloader API written in Python
 ![Nix](https://img.shields.io/badge/NIX-5277C3.svg?style=for-the-badge&logo=NixOS&logoColor=white)
 
 ### and ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) soon!
+
 
 # Installation
 
@@ -141,6 +149,8 @@ If you get a JSON response with the following content, then you are good to go!
 - [x] Add option to download mp3 files(this is actually easier than video files ~~,but i haven't gotten around to it yet~~)
 - [x] Handle multiple file links more gracefully
 - [x] Add graceful error handling for invalid links
+- [x] Open source the project
+- [ ] Restructure the backend to be more modular
 - [ ] Add support for Postgres for various database operations
 - [ ] Anonymize the file access links
 - [ ] Add option to download playlists
