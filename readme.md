@@ -151,16 +151,16 @@ If you get a JSON response with the following content, then you are good to go!
 - [x] Handle multiple file links more gracefully
 - [x] Add graceful error handling for invalid links
 - [x] Open source the project
-- [ ] Restructure the backend to be more modular
+- [x] Restructure the backend to be more modular
 - [ ] Anonymize the file access links
 - [ ] Add option to download playlists
 - [ ] Add a frontend
 - [ ] Create a special message if:
 	- [x] The file is not available for download, or if the link is invalid
+	- [x] If the file is already downloaded and not expired
 	- [ ] The file is too large
 	- [ ] The file is too long
 	- [ ] The file is not available in the requested resolution
-	- [ ] If the file is already downloaded and not expired
 - [ ] Add support to Postgres for:
 	- [ ] Logging downloads
 	- [ ] Logging errors

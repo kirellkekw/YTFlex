@@ -6,9 +6,9 @@ from config import download_path, max_file_age
 
 async def purge_old_files():
     """Purge files older than max_file_age defined in config.py from download_directory"""
-    print("File purge subprocess started.")
+    print("File purge subprocess started.")  # debug
     while True:
-        await asyncio.sleep(60)  # every minute
+        await asyncio.sleep(60)  # check every minute
         for file in os.listdir(download_path):
             # get creation time of file
             last_change = os.path.getctime(

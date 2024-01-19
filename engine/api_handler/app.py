@@ -1,14 +1,14 @@
 from fastapi import FastAPI
 import asyncio
-
+from engine.api_handler.side_processes.base import *
+from engine.downloader.base import *
 from config import download_path, show_yt_dlp_output, max_file_size, ip_or_domain, res_list
-from engine.downloader import download_videos, download_audios
-from engine.purge_old_files import purge_old_files
+
 
 app = FastAPI()
 
 
-@app.on_event("startup")
+@app.on_event("startup")  # run this function when the server starts
 async def startup_event():
     asyncio.create_task(purge_old_files())
 
