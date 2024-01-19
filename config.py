@@ -11,13 +11,13 @@ max_file_size: int = 100
 download_path: str = "./downloads"
 
 # the port to run the server on(should be synced across nginx and docker run command), or it won't work.
-port:int = 2002
+port: int = 2002
 
 # the ip to run the API server on(should be the same as the one in nginx), or it may not work.
-ip_or_domain:str = "5.178.111.177"
+ip_or_domain: str = "5.178.111.177"
 
 # in seconds, 3600 = 1 hour, 86400 = 1 day, 604800 = 1 week, 2592000 = 1 month
-max_file_age:int = 3600
+max_file_age: int = 3600
 
 # sets if download jobs should be silent or not. if set to False, the download will be run in silent mode.
-show_yt_dlp_output:bool = True
+show_yt_dlp_output: bool = True
