@@ -152,8 +152,8 @@ If you get a JSON response with the following content, then you are good to go!
 - [x] Add graceful error handling for invalid links
 - [x] Open source the project
 - [x] Restructure the backend to be more modular
+- [x] Add option to download playlists
 - [ ] Anonymize the file access links
-- [ ] Add option to download playlists
 - [ ] Add a frontend
 - [ ] Create a special message if:
 	- [x] The file is not available for download, or if the link is invalid

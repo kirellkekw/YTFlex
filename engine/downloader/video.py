@@ -13,8 +13,18 @@ def download_videos(urls: list[str] | str, preferred_res: str | int = 720, downl
     ip_or_domain: the ip or domain of the server, used to generate the download link
     res_list: the list of resolutions to choose from.
     """
+
+    is_playlist = False
     if isinstance(urls, str):
-        urls = [urls]  # allows for single url to be passed in
+        # if it's a playlist, we'll just pass it to the playlist initializer
+        if "playlist?list=" in urls:
+            playlist_data = parse_playlist(urls)
+            is_playlist = True
+            if len(playlist_data) == 0:
+                return {"message": "Given playlist link is either broken or unavailable."}
+            urls = [video.url for video in playlist_data]
+        else:
+            urls = [urls]  # allows for single url to be passed in
 
     if isinstance(preferred_res, str):
         # someone might have accidentally passed with p at the end
@@ -44,16 +54,34 @@ def download_videos(urls: list[str] | str, preferred_res: str | int = 720, downl
     download_info = []
     for url in urls:  # Normally we can pass in a list of urls to yt-dlp, but we'll just loop through them instead for more control
 
-        # we'll try to get the info about the video first, so we can format the title and check if file already exists
-        info = extract_info(show_output, url)
-        if info == None:
-            download_info += [{"link": "",
-                               "message": "Video is unavailable", "metadata": ""}]
-            continue
+        if is_playlist:
+            # fetch from prefetched playlist data, no need to make another request
+            if len(playlist_data) == 0:
+                # this should never happen under normal circumstances
+                # but if it does, we'll stop the loop by preempitvely returning
+                return download_info
+            current_video = playlist_data.pop(0)
+            if not current_video.success:
+                download_info += [{"link": "",
+                                   "message": "Video is unavailable", "metadata": ""}]
+                continue
+
+            url = current_video.url
+            title = current_video.title
+            thumbnail = current_video.thumbnail
+            duration = current_video.duration
+
         else:
-            title = info.title
-            thumbnail = info.thumbnail
-            duration = info.duration
+            # we'll try to get the info about the video first, so we can format the title and check if file already exists
+            info = extract_info(show_output, url)
+            if info == None:
+                download_info += [{"link": "",
+                                   "message": "Video is unavailable", "metadata": ""}]
+                continue
+            else:
+                title = info.title
+                thumbnail = info.thumbnail
+                duration = info.duration
 
         # options for yt-dlp
         # this took me longer than i'd like to admit to figure out

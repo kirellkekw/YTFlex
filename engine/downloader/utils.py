@@ -144,3 +144,44 @@ def create_response_object(link: str, title: str, thumbnail: str, filename: str,
         response[0]["metadata"]["resolution"] = resolution
 
     return response
+
+
+def parse_playlist(link: str):
+    """Parses the playlist and returns a list of VideoInfo objects"""
+    print("Parsing playlist...")
+    class VideoInfo:
+        def __init__(self, title: str, duration: int, url: str, thumbnail: str, success: bool = True):
+            self.url = url
+            self.title = title
+            self.duration = duration
+            self.thumbnail = thumbnail
+            self.success = success
+
+    parsed_data: list[VideoInfo] = []
+    try:
+        data = yt_dlp.YoutubeDL().extract_info(link, download=False)
+        for index in range(len(data["entries"])):
+            try:
+                title = data["entries"][index]["title"]
+                duration = data["entries"][index]["duration"]
+                vid_link = data["entries"][index]["webpage_url"]
+                thumbnail = data["entries"][index]["thumbnail"]
+                success = True
+            except KeyError:
+                title = ""
+                duration = ""
+                vid_link = ""
+                thumbnail = ""
+                success = False
+            parsed_data.append(
+                VideoInfo(title, duration, vid_link, thumbnail, success))
+    except yt_dlp.utils.DownloadError:
+        return []
+    return parsed_data
+
+# test zone
+if __name__ == "__main__":
+    link = "https://www.youtube.com/playlist?list=PLqVvJJMWXY-VcWIDeePQXkA54Ehj8dy1X"
+    parsed_data = parse_playlist(link)
+    import jsonpickle
+    print(jsonpickle.encode(parsed_data, indent=4))
