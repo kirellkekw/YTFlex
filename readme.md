@@ -1,6 +1,4 @@
 # YTFlex
-![GitHub license](https://img.shields.io/github/license/kirellkekw/YTFlex?style=for-the-badge)
-
 
 <div>
 <img src="https://cdn.discordapp.com/attachments/889091145349623848/1193330729157922977/IMG_6589.png?ex=65ac52d8&is=6599ddd8&hm=7484a7c3b209a61d041556ba205946d5a4de355a8d0f715f01bdcc4151816250&" alt="yt_api" style="width: 300px;align:center;" />
