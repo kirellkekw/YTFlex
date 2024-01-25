@@ -9,14 +9,6 @@
 # Description
 Deployment ready, easy to use and fast YouTube downloader API written in Python with CDN setup guide.
 
-## To see the project live, check the example links below:
-
-http://5.178.111.177/yt_api/root # to test if the server is running
-
-http://5.178.111.177/yt_api/download/audio?link=https://www.youtube.com/watch?v=3r-qDvD3F3c # to download audio
-
-http://5.178.111.177/yt_api/download/video?link=https://www.youtube.com/watch?v=3r-qDvD3F3c&res=240 # to download video
-
 # Powered by:
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
