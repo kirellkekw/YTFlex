@@ -25,13 +25,11 @@ Deployment ready, easy to use and fast YouTube downloader API written in Python 
 
 ## 1- Download the dependencies
 
-* FFmpeg
 * Docker
 * Nginx
 
 For detailed instructions on how to install those, please refer to the following links:
 
-- [FFmpeg Downloads](https://ffmpeg.org/download.html)
 - [Docker Install Guide](https://docs.docker.com/engine/install/)
 - [Nginx Install Guide](https://www.nginx.com/resources/wiki/start/topics/tutorials/install/)
 
