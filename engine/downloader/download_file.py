@@ -107,10 +107,3 @@ def download_files(
         download_info.append(response)
 
     return download_info
-
-
-if __name__ == "__main__":
-    a = download_files(
-        "https://www.youtube.com/watch?v=a5uQMwRMHcs", True, 1080, True)
-    import jsonpickle
-    print(jsonpickle.encode(a, indent=4))
