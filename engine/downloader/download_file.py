@@ -86,7 +86,6 @@ def download_files(
         ydl_opts = ydl_opts_builder(
             title, is_video_request, preferred_res, convert_to_mp4)
 
-
         # for now, we'll just assume the file doesn't exist
 
         # the following script should probably be moved to a separate file
@@ -96,7 +95,7 @@ def download_files(
         filename_collector = FilenameCollectorPP()
         ydl = YoutubeDL(ydl_opts)
         ydl.add_post_processor(filename_collector)
-        ydl.download([video.yt_url])
+        ydl.download([video.url])
         last_downloaded_dir: str = filename_collector.filenames[-1]
         filename: str = os.path.basename(last_downloaded_dir)
 
