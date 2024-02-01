@@ -1,25 +1,17 @@
 # YTFlex
 
-<div>
- <img src="https://cdn.discordapp.com/attachments/889091145349623848/1193330729157922977/IMG_6589.png?ex=65ac52d8&is=6599ddd8&hm=7484a7c3b209a61d041556ba205946d5a4de355a8d0f715f01bdcc4151816250&" alt="yt_api" style="width: 300px;align:center;" />
-</div>
-
-*a better image is required here, pull requests are welcome
-
-# Description
+![Pylint](https://img.shields.io/badge/linting-pylint-green)
 
 Deployment ready, easy to use and fast YouTube downloader API written in Python with CDN setup guide.
 
-# Powered by
-
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
-![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)
 ![Nix](https://img.shields.io/badge/NIX-5277C3.svg?style=for-the-badge&logo=NixOS&logoColor=white)
 
-### and ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) soon
+and ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) soon!
 
 # Installation
 
