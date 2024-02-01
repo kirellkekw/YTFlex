@@ -1,6 +1,6 @@
 # YTFlex
 
-![Pylint](https://img.shields.io/badge/linting-pylint-green)
+[![Pylint](https://github.com/kirellkekw/YTFlex/actions/workflows/pylint.yml/badge.svg)](https://github.com/kirellkekw/YTFlex/actions/workflows/pylint.yml)
 
 Deployment ready, easy to use and fast YouTube downloader API written in Python with CDN setup guide.
 
