@@ -2,7 +2,6 @@
 This module is used as an easy export point for all the utility functions.
 """
 
-from engine.downloader.utils.check_if_file_exists import check_if_file_exists
 from engine.downloader.utils.create_download_link import create_download_link
 from engine.downloader.utils.create_response import create_response, create_error_response
 from engine.downloader.utils.extract_metadata import extract_info
@@ -15,7 +14,6 @@ from engine.downloader.utils.is_valid_url import is_valid_url
 from engine.downloader.utils.extract_playlist_metadata import parse_playlist
 
 __all__ = [
-    "check_if_file_exists",
     "create_download_link",
     "create_response",
     "create_error_response",
