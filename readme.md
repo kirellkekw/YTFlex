@@ -32,8 +32,8 @@ For detailed instructions on how to install those, please refer to the following
 * You need to have git installed on your machine to do this, but you can also download the repository as a zip file and extract it to skip this step.
 
 ```bash
-git clone https://github.com/kirellkekw/yt_api.git
-cd yt_api
+git clone https://github.com/kirellkekw/YTFlex.git
+cd YTFlex
 ```
 
 ### 2.2- Configure the settings
