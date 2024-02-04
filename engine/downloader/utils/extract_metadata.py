@@ -6,14 +6,17 @@ from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
 from engine.downloader.utils.video_info import VideoInfo
 from engine.downloader.utils.format_title import format_title
-from config import SHOW_YT_DLP_OUTPUT
+import config
+
 
 
 def extract_info(url: str):
     """Try to extract info, return None if the video is unavailable"""
 
+    show_yt_dlp_output = config.get("SHOW_YT_DLP_OUTPUT")
+
     try:
-        info = YoutubeDL({"quiet": not SHOW_YT_DLP_OUTPUT}).extract_info(
+        info = YoutubeDL({"quiet": not show_yt_dlp_output}).extract_info(
             url=url, download=False)
     except DownloadError:
         # if the video is unavailable, we'll just skip it

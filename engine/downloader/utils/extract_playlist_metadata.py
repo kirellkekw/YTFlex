@@ -3,19 +3,18 @@ Utility function to parse a playlist and return a list of VideoInfo objects(see 
 """
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
-from config import SHOW_YT_DLP_OUTPUT
+import config
 from engine.downloader.utils.video_info import VideoInfo
-
-
 
 
 def parse_playlist(link: str):
     """Parses the playlist and returns a list of VideoInfo objects"""
-    print("Parsing playlist...")
+
+    show_yt_dlp_output = config.get("SHOW_YT_DLP_OUTPUT")
 
     parsed_data: list[VideoInfo] = []
     try:
-        data = YoutubeDL({"quiet": not SHOW_YT_DLP_OUTPUT}
+        data = YoutubeDL({"quiet": not show_yt_dlp_output}
                          ).extract_info(link, download=False)
         for index in range(len(data["entries"])):
             try:

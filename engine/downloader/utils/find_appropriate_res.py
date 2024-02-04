@@ -2,7 +2,7 @@
 Utility to find the appropriate resolution to download.
 """
 
-from config import RES_LIST
+import config
 
 
 def find_appropriate_res(preferred_res: int | str):
@@ -14,6 +14,9 @@ def find_appropriate_res(preferred_res: int | str):
     Args:
         preferred_res: The preferred resolution to download.
     """
+
+    res_list: list[int] = config.get("RES_LIST")
+
     if preferred_res == str:
         # someone might have accidentally passed with p at the end
         # being the good dev we are, we'll just remove it
@@ -25,15 +28,15 @@ def find_appropriate_res(preferred_res: int | str):
             print("Resolution must be an integer")
             return 720  # default to 720p
 
-    if preferred_res not in RES_LIST:
+    if preferred_res not in res_list:
         # find a resolution that is lower than the preferred resolution
-        for res in RES_LIST:
+        for res in res_list:
             if preferred_res > res:
                 preferred_res = res
                 break
         # i really hope you're not desperate enough to download 144p
         # i'm not stopping you though
-        if preferred_res < RES_LIST[-1]:
-            preferred_res = RES_LIST[-1]
+        if preferred_res < res_list[-1]:
+            preferred_res = res_list[-1]
 
     return preferred_res

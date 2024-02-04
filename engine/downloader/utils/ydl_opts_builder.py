@@ -3,7 +3,7 @@ Utility function to build the options for yt-dlp.
 """
 
 import os
-from config import MAX_FILE_SIZE, DOWNLOAD_PATH, SHOW_YT_DLP_OUTPUT
+import config
 from engine.downloader.utils.find_appropriate_res import find_appropriate_res
 
 
@@ -27,17 +27,23 @@ def ydl_opts_builder(
         Will have no effect if downloading audio only.
 
     """
+
+    max_file_size = config.get("MAX_FILE_SIZE")
+    download_path = config.get("DOWNLOAD_PATH")
+    show_yt_dlp_output = config.get("SHOW_YT_DLP_OUTPUT")
+
+
     if is_video_request:
         # format string for yt-dlp
         preferred_res = find_appropriate_res(preferred_res)
 
         ydl_opts = {
-            "format": f"bestvideo[height<={preferred_res}][filesize<{MAX_FILE_SIZE}M]+" +
+            "format": f"bestvideo[height<={preferred_res}][filesize<{max_file_size}M]+" +
             "bestaudio/best[height<={preferred_res}][filesize<{int(MAX_FILE_SIZE/4)}M]",
 
-            "outtmpl": os.path.join(DOWNLOAD_PATH, f"{title}-%(height)sp.%(ext)s"),
+            "outtmpl": os.path.join(download_path, f"{title}-%(height)sp.%(ext)s"),
             "windowsfilenames": True,
-            "quiet": not SHOW_YT_DLP_OUTPUT,
+            "quiet": not show_yt_dlp_output,
         }
 
         if convert_to_mp4:
@@ -46,10 +52,10 @@ def ydl_opts_builder(
 
     else:
         ydl_opts = {
-            'format': f"bestaudio/best[filesize<{int(MAX_FILE_SIZE)}M]",
-            "outtmpl": os.path.join(DOWNLOAD_PATH, f"{title}"),
+            'format': f"bestaudio/best[filesize<{int(max_file_size)}M]",
+            "outtmpl": os.path.join(download_path, f"{title}"),
             "windowsfilenames": True,
-            "quiet": not SHOW_YT_DLP_OUTPUT,
+            "quiet": not show_yt_dlp_output,
             "postprocessors":
                 [{"key": "FFmpegExtractAudio", "preferredcodec": "mp3",
                     "preferredquality": "192"}],

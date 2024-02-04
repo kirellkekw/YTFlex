@@ -5,21 +5,26 @@ Utility side process to purge old files from the download directory after a cert
 import asyncio
 import os
 import time
-from config import DOWNLOAD_PATH, MAX_FILE_AGE
+import config
 
 
 async def purge_old_files():
     """Purge files older than max_file_age defined in config.py from download_directory"""
+
     print("File purge subprocess started.")  # debug
+
     while True:
+        download_path = config.get("DOWNLOAD_PATH")
+        max_file_age = config.get("MAX_FILE_AGE")
+
         await asyncio.sleep(60)  # check every minute
-        for file in os.listdir(DOWNLOAD_PATH):
+        for file in os.listdir(download_path):
             # get creation time of file
             last_change = os.path.getctime(
-                os.path.join(DOWNLOAD_PATH, file))
+                os.path.join(download_path, file))
             now = time.time()
             file_age = int(now - last_change)
             # print(file, file_age)
-            if file_age > MAX_FILE_AGE:
+            if file_age > max_file_age:
                 print(f"Deleting {file}, {file_age} seconds old")
-                os.remove(os.path.join(DOWNLOAD_PATH, file))
+                os.remove(os.path.join(download_path, file))

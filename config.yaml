@@ -1,0 +1,40 @@
+# Configuration options for the API
+
+# The resolutions the API can attempt to download.
+# Comment out any resolution you don't want to be available.
+RES_LIST: # type: list[int]
+  # - 2160
+  # - 1440
+  - 1080
+  - 720
+  - 480
+  - 360
+  - 240
+  - 144
+
+# Maximum file size in megabytes. If a resolution is not available due to this limitation,
+# it will download the next best resolution.
+# This only limits the filesize of the video, not the audio.
+# If a video is 97mb and audio is 5mb, the video will be 102mb and will be downloaded anyway.
+# Max audio file size is the same when downloading audio only.
+MAX_FILE_SIZE: 100 # type: int
+
+# The directory to download the videos to.
+# Should be the same as the one in nginx and docker command, or it won't work.
+DOWNLOAD_PATH: "./downloads" # type: str
+
+# The port to run the API server on.
+# Should be the same as the one in nginx and docker command, or it won't work.
+PORT: 2002 # type: int
+
+# The IP or domain to use when generating the download link.
+# Has no effect on nginx or docker command, but is used in the API message returned.
+IP_OR_DOMAIN: "5.178.111.177" # type: str
+
+# Max file age in seconds.
+# 3600 = 1 hour, 86400 = 1 day, 604800 = 1 week
+MAX_FILE_AGE: 3600 # type: int
+
+# Sets if download jobs should be silent or not.
+# If set to false, the output from yt-dlp will not be shown.
+SHOW_YT_DLP_OUTPUT: true # type: bool
