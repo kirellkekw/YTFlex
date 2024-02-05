@@ -148,6 +148,7 @@ If you get a JSON response with the following content, then you are good to go!
 * [x] Open source the project
 * [x] Restructure the backend to be more modular
 * [x] Add option to download playlists
+* [x] Allow passing video or playlist id's as a parameter instead of a link
 * [ ] Add a control block before downloads to prevent redownloading same files(this was broken, i'll fix it soon)
 * [ ] Anonymize the file access links
 * [ ] Add a frontend
