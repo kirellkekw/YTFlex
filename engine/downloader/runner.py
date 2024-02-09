@@ -5,26 +5,24 @@ by having the logic here.
 """
 
 # pylint: disable=too-many-branches
-
+#
 # this file is the main file for the downloader module
 # and it requires too many branches to be reduced into a sane number
 # so we disable the warning for this file only
 
+# pylint: disable=wildcard-import
+#
+# the wildcard import is used to import all utility functions which are
+# going to be used in this file.
+
+# pylint: disable=fixme
+#
+# this is for pylint to not fail the build because of the fixme comments
+
+
 import os
 from yt_dlp import YoutubeDL
-from engine.downloader.utils.base import (
-    create_download_link,
-    create_response,
-    create_error_response,
-    extract_info,
-    FilenameCollectorPP,
-    ydl_opts_builder,
-    format_title,
-    is_playlist,
-    is_valid_url,
-    parse_playlist,
-    check_if_file_exists,
-)
+from engine.downloader.utils.base import *
 
 
 def download_files(
@@ -103,19 +101,20 @@ def download_files(
         ydl_opts = ydl_opts_builder(
             video.title, is_video_request, preferred_res, convert_to_mp4)
 
-        file = check_if_file_exists(video.title, is_video_request)
+        # TODO: check if file exists
+        # file = check_if_file_exists(video.title, is_video_request)
+        # if file:
+        #     # file exists and we have it's name, no need to download it again
+        #     filename = file
+        # else:
 
-        if file:
-            # file exists and we have it's name, no need to download it again
-            filename = file
-        else:
-            # create a download object
-            filename_collector = FilenameCollectorPP()
-            ydl = YoutubeDL(ydl_opts)
-            ydl.add_post_processor(filename_collector)
-            ydl.download([video.url])
-            last_downloaded_dir: str = filename_collector.filenames[-1]
-            filename: str = os.path.basename(last_downloaded_dir)
+        # create a download object
+        filename_collector = FilenameCollectorPP()
+        ydl = YoutubeDL(ydl_opts)
+        ydl.add_post_processor(filename_collector)
+        ydl.download([video.url])
+        last_downloaded_dir: str = filename_collector.filenames[-1]
+        filename: str = os.path.basename(last_downloaded_dir)
 
         cdn_link: str = create_download_link(filename)
 

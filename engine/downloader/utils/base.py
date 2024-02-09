@@ -7,21 +7,19 @@ from engine.downloader.utils.create_response import create_response, create_erro
 from engine.downloader.utils.extract_metadata import extract_info
 from engine.downloader.utils.filename_collector import FilenameCollectorPP
 from engine.downloader.utils.ydl_opts_builder import ydl_opts_builder
-from engine.downloader.utils.find_appropriate_res import find_appropriate_res
 from engine.downloader.utils.format_title import format_title
 from engine.downloader.utils.is_playlist import is_playlist
 from engine.downloader.utils.is_valid_url import is_valid_url
 from engine.downloader.utils.extract_playlist_metadata import parse_playlist
-from engine.downloader.utils.check_if_file_exists import check_if_file_exists
+# from engine.downloader.utils.check_if_file_exists import check_if_file_exists
 
 __all__ = [
     "create_download_link",
-    "check_if_file_exists",
+#     "check_if_file_exists",
     "create_response",
     "create_error_response",
     "extract_info",
     "FilenameCollectorPP",
-    "find_appropriate_res",
     "ydl_opts_builder",
     "format_title",
     "is_playlist",
