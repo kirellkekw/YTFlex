@@ -38,3 +38,8 @@ MAX_FILE_AGE: 3600 # type: int
 # Sets if download jobs should be silent or not.
 # If set to false, the output from yt-dlp will not be shown.
 SHOW_YT_DLP_OUTPUT: true # type: bool
+
+# Sets the allowed domains for CORS requests.
+ALLOWED_DOMAINS:
+  - "https://yt-api.vercel.app"
+  - "https://www.yt-api.vercel.app" 

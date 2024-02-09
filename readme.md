@@ -40,15 +40,16 @@ cd YTFlex
 
 * Open the `config.yaml` file and change the settings according to your needs with your favorite text editor. Here's a quick explanation of what each setting does:
 
-| Setting | Description | Default Value | Type |
-| --- | --- | --- | --- |
-| `res_list` | A list of resolutions API can attempt to download. | `[1080, 720, 480, 360, 240, 144]` | `list[int]` |
-| `max_file_size` | The maximum file size in megabytes the API can download. | `100` | `int` |
-| `download_path` | Path to the directory where the downloaded files will be stored. | `./downloads/` | `str` |
-| `port` | The port the API server will listen on. | `2002` | `int` |
-| `ip_or_domain` | The address API will use to create a CDN link. | `5.178.111.177` | `str` |
-| `max_file_age` | Maximum age of a file in seconds before it gets deleted. | `3600` | `int` |
-| `show_yt_dlp_output` | Decides if yt_dlp output is printed to the console or not. | `True` | `bool` |
+| Setting | Description | Type |
+| --- | --- | --- |
+| `res_list` | A list of resolutions API can attempt to download. | `list[int]` |
+| `max_file_size` | The maximum file size in megabytes the API can download. | `int` |
+| `download_path` | Path to the directory where the downloaded files will be stored. | `str` |
+| `port` | The port the API server will listen on. | `int` |
+| `ip_or_domain` | The address API will use to create a CDN link. | `str` |
+| `max_file_age` | Maximum age of a file in seconds before it gets deleted. | `int` |
+| `show_yt_dlp_output` | Decides if yt_dlp output is printed to the console or not. | `bool` |
+| `allowed_domains` | A list of allowed domains for CORS requests. | `list[str]` |
 
 ## 3- Run the server with Docker
 

@@ -4,11 +4,23 @@ This file contains the FastAPI app and the routes for the API.
 
 import asyncio
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from engine.api_handler.side_processes.base import purge_old_files
-from engine.downloader.download_file import download_files
+from engine.downloader.runner import download_files
+import config
 
 
 app = FastAPI()
+origins = config.get("ALLOWED_DOMAINS")
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type", "Accept"],
+)
 
 
 @app.on_event("startup")  # run this function when the server starts
