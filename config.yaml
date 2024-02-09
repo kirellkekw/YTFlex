@@ -42,4 +42,4 @@ SHOW_YT_DLP_OUTPUT: true # type: bool
 # Sets the allowed domains for CORS requests.
 ALLOWED_DOMAINS:
   - "https://ytflex.vercel.app"
-  - "https://www.ytflex.vercel.app" 
+  - "https://www.ytflex.vercel.app"
