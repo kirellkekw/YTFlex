@@ -37,7 +37,7 @@ def ydl_opts_builder(
 
         ydl_opts = {
             "format": f"bestvideo[height<={preferred_res}][filesize<{max_file_size}M]+" +
-            "bestaudio/best[height<={preferred_res}][filesize<{int(MAX_FILE_SIZE/4)}M]",
+            f"bestaudio/best[height<={preferred_res}][filesize<{int(max_file_size/4)}M]",
             "outtmpl": os.path.join(download_path, f"{title}-%(height)sp.%(ext)s"),
             "windowsfilenames": True,
             "quiet": not show_yt_dlp_output,
