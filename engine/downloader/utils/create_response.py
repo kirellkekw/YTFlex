@@ -10,7 +10,7 @@ def create_response(
         thumbnail: str,
         filename: str,
         duration: int,
-        already_downloaded: bool,):
+        already_downloaded: bool):
     """
     Creates and returns a response object for the client.
 
@@ -57,4 +57,14 @@ def create_error_response(message: str) -> dict:
     Returns:
         A dictionary containing the error message.
     """
+
+    # responses = {
+    #     "invalidurl": "Invalid URL/ID provided",
+    #     "unavailable": "Video is not accessible in our server location",
+    #     "file_too_big": "Video is too big to download",
+    #     "resolution_unavailable": "Requested resolution is not available for the video",
+    #     "invalid_resolution": "Invalid resolution provided",
+    # }
+    # this will be put to use in the following commit(s), pinky promise
+
     return {"message": message}

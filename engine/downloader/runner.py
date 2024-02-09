@@ -4,11 +4,27 @@ Will contain all logic involved in downloading files by either importing from ot
 by having the logic here.
 """
 
+# pylint: disable=too-many-branches
+
+# this file is the main file for the downloader module
+# and it requires too many branches to be reduced into a sane number
+# so we disable the warning for this file only
+
 import os
 from yt_dlp import YoutubeDL
-from engine.downloader.utils.base import is_playlist, is_valid_url, \
-    parse_playlist, extract_info, format_title, create_download_link, \
-    FilenameCollectorPP, ydl_opts_builder, create_response, create_error_response
+from engine.downloader.utils.base import (
+    create_download_link,
+    create_response,
+    create_error_response,
+    extract_info,
+    FilenameCollectorPP,
+    ydl_opts_builder,
+    format_title,
+    is_playlist,
+    is_valid_url,
+    parse_playlist,
+    check_if_file_exists,
+)
 
 
 def download_files(
@@ -48,7 +64,8 @@ def download_files(
             parsed_links_list = parse_playlist(passed_urls)
 
         # if not a playlist then it's a single video
-        parsed_links_list.append(extract_info(passed_urls))
+        else:
+            parsed_links_list.append(extract_info(passed_urls))
 
     elif isinstance(passed_urls, list):
         for video in passed_urls:
@@ -78,31 +95,38 @@ def download_files(
             continue
 
         # format title
-        title = format_title(video.title)
+        video.title = format_title(video.title)
 
         # this function will create the required options for yt-dlp
         # regardless of whether the request is for a video or audio file
         # by checking if the request is for a video or audio file internally
         ydl_opts = ydl_opts_builder(
-            title, is_video_request, preferred_res, convert_to_mp4)
+            video.title, is_video_request, preferred_res, convert_to_mp4)
 
-        # for now, we'll just assume the file doesn't exist
+        file = check_if_file_exists(video.title, is_video_request)
 
-        # the following script should probably be moved to a separate file
-        # but for now, it's fine here
-
-        # create a download object
-        filename_collector = FilenameCollectorPP()
-        ydl = YoutubeDL(ydl_opts)
-        ydl.add_post_processor(filename_collector)
-        ydl.download([video.url])
-        last_downloaded_dir: str = filename_collector.filenames[-1]
-        filename: str = os.path.basename(last_downloaded_dir)
+        if file:
+            # file exists and we have it's name, no need to download it again
+            filename = file
+        else:
+            # create a download object
+            filename_collector = FilenameCollectorPP()
+            ydl = YoutubeDL(ydl_opts)
+            ydl.add_post_processor(filename_collector)
+            ydl.download([video.url])
+            last_downloaded_dir: str = filename_collector.filenames[-1]
+            filename: str = os.path.basename(last_downloaded_dir)
 
         cdn_link: str = create_download_link(filename)
-        response = create_response(cdn_link, video.thumbnail,
-                                   filename, video.duration, False)
 
-        download_info.append(response)
+        download_info.append(
+            create_response(
+                cdn_link,
+                video.thumbnail,
+                filename,
+                video.duration,
+                False
+            )
+        )
 
     return download_info

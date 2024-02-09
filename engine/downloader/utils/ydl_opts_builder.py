@@ -25,13 +25,11 @@ def ydl_opts_builder(
 
         convert_to_mp4: Whether to convert the downloaded file to mp4 or not. Defaults to False.
         Will have no effect if downloading audio only.
-
     """
 
     max_file_size = config.get("MAX_FILE_SIZE")
     download_path = config.get("DOWNLOAD_PATH")
     show_yt_dlp_output = config.get("SHOW_YT_DLP_OUTPUT")
-
 
     if is_video_request:
         # format string for yt-dlp
@@ -40,7 +38,6 @@ def ydl_opts_builder(
         ydl_opts = {
             "format": f"bestvideo[height<={preferred_res}][filesize<{max_file_size}M]+" +
             "bestaudio/best[height<={preferred_res}][filesize<{int(MAX_FILE_SIZE/4)}M]",
-
             "outtmpl": os.path.join(download_path, f"{title}-%(height)sp.%(ext)s"),
             "windowsfilenames": True,
             "quiet": not show_yt_dlp_output,
