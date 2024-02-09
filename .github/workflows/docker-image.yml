@@ -24,4 +24,4 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: localhost:5000/ytflex:${{ github.sha }}
+        tags: host.docker.internal:5000/ytflex:${{ github.sha }}
