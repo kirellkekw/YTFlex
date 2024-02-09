@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Downloader</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .input-container {
+            width: 600px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .resolution-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .resolution-buttons button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        .resolution-buttons button.selected,
+        .toggle-buttons button.selected {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .toggle-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .toggle-buttons button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        /* Hide resolution buttons when not needed */
+        .audio-mode .resolution-buttons {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="input-container">
+        <input type="text" id="video-url" placeholder="Enter video URL...">
+        <div class="toggle-buttons">
+            <button onclick="selectDownloadType('video')" id="video-button">Video</button>
+            <button onclick="selectDownloadType('audio')" id="audio-button">Audio</button>
+        </div>
+        <div class="resolution-buttons" id="resolution-buttons">
+            <button onclick="setResolution(144)" id="btn-144">144p</button>
+            <button onclick="setResolution(240)" id="btn-240">240p</button>
+            <button onclick="setResolution(360)" id="btn-360">360p</button>
+            <button onclick="setResolution(480)" id="btn-480">480p</button>
+            <button onclick="setResolution(720)" id="btn-720">720p</button>
+            <button onclick="setResolution(1080)" id="btn-1080">1080p</button>
+        </div>
+        <button onclick="constructUrl()">Create URL</button>
+        <div id="download-url"></div>
+    </div>
+
+    <script>
+        var selectedType = 'video'; // Default selected type
+
+        function setResolution(resolution) {
+            // Store selected resolution in a global variable
+            window.selectedResolution = resolution;
+
+            // Remove 'selected' class from all buttons
+            var buttons = document.querySelectorAll('.resolution-buttons button');
+            buttons.forEach(button => {
+                button.classList.remove('selected');
+            });
+
+            // Add 'selected' class to the clicked button
+            var buttonId = "btn-" + resolution;
+            var selectedButton = document.getElementById(buttonId);
+            selectedButton.classList.add('selected');
+        }
+
+        function selectDownloadType(type) {
+            selectedType = type; // Update selected type
+
+            // Remove 'selected' class from all buttons
+            var buttons = document.querySelectorAll('.toggle-buttons button');
+            buttons.forEach(button => {
+                button.classList.remove('selected');
+            });
+
+            // Add 'selected' class to the clicked button
+            var buttonId = type + "-button";
+            var selectedButton = document.getElementById(buttonId);
+            selectedButton.classList.add('selected');
+
+            // Toggle class for audio mode
+            var inputContainer = document.querySelector('.input-container');
+            if (type === 'audio') {
+                inputContainer.classList.add('audio-mode');
+            } else {
+                inputContainer.classList.remove('audio-mode');
+            }
+        }
+
+        function constructUrl() {
+            var videoUrl = document.getElementById("video-url").value;
+            var resolution = window.selectedResolution || 720; // Default to 720p if resolution is not selected
+            var downloadUrl = "http://mydomain.com/download/" + (selectedType === 'audio' ? 'audio' : 'video') + "?link=" + encodeURIComponent(videoUrl) + (selectedType === 'video' ? ("&res=" + resolution) : "");
+
+            // Display the constructed URL
+            document.getElementById("download-url").textContent = downloadUrl;
+        }
+    </script>
+</body>
+
+</html>
