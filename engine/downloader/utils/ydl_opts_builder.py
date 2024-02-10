@@ -11,7 +11,8 @@ def ydl_opts_builder(
         title: str,
         is_video_request: bool,
         preferred_res: int = 720,
-        convert_to_mp4: bool = False):
+        convert_to_mp4: bool = False
+    ):
     """
     Utility function for building the options for yt-dlp.
 
