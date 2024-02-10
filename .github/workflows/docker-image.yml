@@ -31,9 +31,11 @@ jobs:
           push: true
           tags: 5.178.111.177:5000/ytflex:${{ github.sha }}
 
-
       - name: Replace Live Image
         run: nix flake update /etc/nixos
 
-      - name: Rebuild System
-        run: nixos-rebuild switch
+      - name: Upgrade System
+        run: systemctl start nixos-upgrade.service
+
+    #   - name: Rebuild System
+    #     run: nixos-rebuild switch
