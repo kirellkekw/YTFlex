@@ -40,6 +40,5 @@ MAX_FILE_AGE: 3600 # type: int
 SHOW_YT_DLP_OUTPUT: true # type: bool
 
 # Sets the allowed domains for CORS requests.
-ALLOWED_DOMAINS:
+ALLOWED_DOMAINS: # type: list[str]
   - "https://ytflex.vercel.app"
-  - "https://www.ytflex.vercel.app"
