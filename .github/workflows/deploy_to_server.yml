@@ -39,4 +39,5 @@ jobs:
 
       - name: Run Docker Image
         if: always()
-        run: docker run --detach --name ytflex 5.178.111.177:5000/gondolabot:${{ github.sha }}
+        run: docker run --detach --name ytflex 5.178.111.177:5000/ytflex:${{ github.sha }}
+      
