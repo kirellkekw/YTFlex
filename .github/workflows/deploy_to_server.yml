@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build-and-push-image:
-    runs-on: penguin-devops
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -18,7 +18,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: kirellkekw/test-image:${{ github.sha }}
+          tags: kirellkekw/ytflex:${{ github.sha }}
 
   replace-live-image:
     runs-on: penguin-devops
