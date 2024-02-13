@@ -40,4 +40,4 @@ jobs:
       - name: Run Docker Image
         if: always()
         # docker run -d -p 2002:2002 -v /designated/download/path/:/downloads yt_api:1.0.0
-        run: docker run --detach --name ytflex --publish 2002:2002 --volume /softdisk/beer/cdn_root:/downloads 5.178.111.177:5000/ytflex:${{ github.sha }}
+        run: docker run --detach --restart always --name ytflex --publish 2002:2002 --volume /softdisk/beer/cdn_root:/downloads 5.178.111.177:5000/ytflex:${{ github.sha }}
