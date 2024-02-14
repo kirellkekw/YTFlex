@@ -3,12 +3,16 @@ This file contains the FastAPI app and the routes for the API.
 """
 
 import asyncio
-import subprocess
+import dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from engine.api_handler.side_processes.base import purge_old_files
 from engine.downloader.runner import download_files
 import config
+
+
+dotenv.load_dotenv()
+revision_hash = dotenv.get_key(key_to_get="rev", dotenv_path=".env")
 
 
 app = FastAPI()
@@ -33,15 +37,9 @@ async def startup_event():
 @app.get("/root")
 async def root():
     """To check if the server is running without much hassle."""
-    try:
-        q = subprocess.run(
-            ["git", "log", "-1", "--abbrev-commit", "--format=%h"],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=False)
-    except FileNotFoundError:
-        q = None
 
     return {"message": "Hello World",
-            "revision": q.stdout.strip() if q is not None else "Unavailable"}
+            "revision": revision_hash}
 
 
 @app.get("/download/audio")

@@ -39,4 +39,4 @@ jobs:
 
       - name: Run New Docker Image
         if: always()
-        run: docker run --detach --restart always --name ytflex --publish 2002:2002 --volume /softdisk/beer/cdn_root:/downloads kirellkekw/ytflex:${{ github.sha }}
+        run: docker run --detach --restart always --name ytflex --publish 2002:2002 --env rev=${{ github.sha }}  --volume /softdisk/beer/cdn_root:/downloads kirellkekw/ytflex:${{ github.sha }}
