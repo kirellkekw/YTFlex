@@ -3,15 +3,11 @@ This file contains the FastAPI app and the routes for the API.
 """
 
 import asyncio
-import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from engine.api_handler.side_processes.base import purge_old_files
 from engine.downloader.runner import download_files
 import config
-
-
-revision_hash = os.environ.get('REV_HASH')
 
 
 app = FastAPI()
@@ -37,8 +33,7 @@ async def startup_event():
 async def root():
     """To check if the server is running without much hassle."""
 
-    return {"message": "Hello World",
-            "revision": revision_hash}
+    return {"message": "Hello World"}
 
 
 @app.get("/download/audio")
