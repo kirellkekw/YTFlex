@@ -2,3 +2,4 @@ uvicorn # asgi server
 fastapi # asgi framework
 yt_dlp # youtube-dl fork
 pyyaml # yaml parser
+python-dotenv # necessary to pass environment variables via docker run
