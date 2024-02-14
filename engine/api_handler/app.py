@@ -3,12 +3,17 @@ This file contains the FastAPI app and the routes for the API.
 """
 
 import asyncio
+import os
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from engine.api_handler.side_processes.base import purge_old_files
 from engine.downloader.runner import download_files
 import config
 
+
+load_dotenv()
+revision_hash = os.getenv("REV_HASH")
 
 app = FastAPI()
 origins = config.get("ALLOWED_DOMAINS")
@@ -33,7 +38,8 @@ async def startup_event():
 async def root():
     """To check if the server is running without much hassle."""
 
-    return {"message": "Hello World"}
+    return {"message": "Hello World",
+            "revision_hash": revision_hash[:7]}
 
 
 @app.get("/download/audio")
