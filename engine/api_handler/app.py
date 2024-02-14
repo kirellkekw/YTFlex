@@ -3,7 +3,7 @@ This file contains the FastAPI app and the routes for the API.
 """
 
 import asyncio
-import dotenv
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from engine.api_handler.side_processes.base import purge_old_files
@@ -11,8 +11,7 @@ from engine.downloader.runner import download_files
 import config
 
 
-dotenv.load_dotenv()
-revision_hash = dotenv.get_key(key_to_get="rev", dotenv_path=".env")
+revision_hash = os.environ.get('REV_HASH')
 
 
 app = FastAPI()
