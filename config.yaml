@@ -29,6 +29,7 @@ PORT: 2002 # type: int
 
 # The IP or domain to use when generating the download link.
 # Has no effect on nginx or docker command, but is used in the API message returned.
+# Passing environment variable from docker run command will override this.
 IP_OR_DOMAIN: "5.178.111.177" # type: str
 
 # Max file age in seconds.
