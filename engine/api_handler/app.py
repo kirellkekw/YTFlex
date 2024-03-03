@@ -36,6 +36,11 @@ async def startup_event():
 async def root():
     """To check if the server is running without much hassle."""
 
+    message = {"message": "Hello World"}
+
+    if revision_hash is None:
+        return message
+
     return {"message": "Hello World",
             "revision_hash": revision_hash[:7]}
 
