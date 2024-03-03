@@ -36,7 +36,6 @@ def find_appropriate_res(preferred_res: int | str):
                 break
         # i really hope you're not desperate enough to download 144p
         # i'm not stopping you though
-        if preferred_res < res_list[-1]:
-            preferred_res = res_list[-1]
+        preferred_res = max(preferred_res, res_list[-1])
 
     return preferred_res
