@@ -3,8 +3,9 @@ Utility function to create a download link for a file.
 """
 
 from urllib.parse import quote
-import config
 import os
+import config
+
 
 def create_download_link(filename: str):
     """
