@@ -18,7 +18,9 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: kirellkekw/ytflex:${{ github.sha }}
+          tags: |
+            kirellkekw/ytflex:${{ github.sha }}
+            kirellkekw/ytflex:latest
 
   replace-live-image:
     needs: build-and-push-image
