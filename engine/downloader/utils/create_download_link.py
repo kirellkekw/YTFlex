@@ -4,7 +4,7 @@ Utility function to create a download link for a file.
 
 from urllib.parse import quote
 import config
-
+import os
 
 def create_download_link(filename: str):
     """
@@ -13,6 +13,6 @@ def create_download_link(filename: str):
         filename: FULL filename of the file, including the extension
     """
 
-    ip_or_domain = config.get("IP_OR_DOMAIN")
+    ip_or_domain = os.getenv("ip_or_domain", config.get("IP_OR_DOMAIN"))
 
     return f"http://{ip_or_domain}/cdn/{quote(filename)}"
