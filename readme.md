@@ -86,8 +86,6 @@ docker build -t yt_api:1.0.0 . # including version number is optional, but recom
 docker run --detach --restart always --name ytflex --publish 2002:2002 --volume /designated/download/path/:/downloads yt_api:1.0.0
 ```
 
-rew ##############################################################################################
-
 # 3- Running the CDN server with Nginx
 
 ## 3.1- Create a new server block in your Nginx configuration file, usually located at `/etc/nginx/nginx.conf`
