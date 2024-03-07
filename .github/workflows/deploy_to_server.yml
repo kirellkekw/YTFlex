@@ -15,7 +15,7 @@ jobs:
         run: docker rm ytflex || true
 
       - name: Add Environment Variables
-        run: echo "REV_HASH=${{ github.sha }}" >> .env
+        run: echo "REV_HASH="${{ github.sha }}" >> .env
 
       - name: Create New Image
         run: docker build -t ytflex .
