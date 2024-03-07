@@ -17,8 +17,11 @@ jobs:
       - name: Add Environment Variables
         run: echo REV_HASH = \"${{ github.sha }}\" >> .env
 
-      - name: Create New Image
-        run: docker build -t ytflex .
+      - name: Read ENV
+        run: cat .env
 
-      - name: Run New Image
-        run: docker compose up -d
+      # - name: Create New Image
+      #   run: docker build -t ytflex .
+# 
+      # - name: Run New Image
+      #   run: docker compose up -d
