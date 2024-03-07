@@ -22,14 +22,15 @@ by having the logic here.
 
 import os
 from yt_dlp import YoutubeDL
-from engine.downloader.utils.base import *
+from src.downloader.utils.base import *
 
 
 def download_files(
-        passed_urls: list[str] | str,
-        is_video_request: bool,
-        preferred_res: int = 720,
-        convert_to_mp4: bool = False):
+    passed_urls: list[str] | str,
+    is_video_request: bool,
+    preferred_res: int = 720,
+    convert_to_mp4: bool = False,
+):
     """
     Downloads files from youtube using yt-dlp.
     If a preferred resolution is given, it will attempt to download that resolution.
@@ -37,7 +38,7 @@ def download_files(
     If no preferred resolution is given, it will download audio only instead.
 
     Args:
-        passed_urls: List of urls to download, or a single url as a string. 
+        passed_urls: List of urls to download, or a single url as a string.
         Incompatible with multiple playlists.
 
         is_video_request: Whether the request is for a video or audio file.
@@ -46,7 +47,7 @@ def download_files(
         If not available, audio will be downloaded instead.
 
         convert_to_mp4: Whether to convert the downloaded file to mp4 or not. Defaults to False.
-        Will have no effect if downloading audio only. 
+        Will have no effect if downloading audio only.
     """
 
     # url's will be collected here
@@ -69,8 +70,10 @@ def download_files(
         for video in passed_urls:
             # can't have multiple playlists
             if is_playlist(video):
-                return create_error_response("Can't download multiple playlists. " +
-                                             "Please try again with a single playlist.")
+                return create_error_response(
+                    "Can't download multiple playlists. "
+                    + "Please try again with a single playlist."
+                )
             # check url's are valid
             if not is_valid_url(video):
                 # remove invalid url's from list
@@ -82,8 +85,9 @@ def download_files(
 
     # if no urls are valid
     if parsed_links_list == []:
-        return create_error_response("Invalid URL(s) passed. " +
-                                     "Please check your URL(s) and try again.")
+        return create_error_response(
+            "Invalid URL(s) passed. " + "Please check your URL(s) and try again."
+        )
 
     # create a list of download info per url
     download_info = []
@@ -99,7 +103,8 @@ def download_files(
         # regardless of whether the request is for a video or audio file
         # by checking if the request is for a video or audio file internally
         ydl_opts = ydl_opts_builder(
-            video.title, is_video_request, preferred_res, convert_to_mp4)
+            video.title, is_video_request, preferred_res, convert_to_mp4
+        )
 
         # TODO: check if file exists
         # file = check_if_file_exists(video.title, is_video_request)
@@ -119,13 +124,7 @@ def download_files(
         cdn_link: str = create_download_link(filename)
 
         download_info.append(
-            create_response(
-                cdn_link,
-                video.thumbnail,
-                filename,
-                video.duration,
-                False
-            )
+            create_response(cdn_link, video.thumbnail, filename, video.duration, False)
         )
 
     return download_info

@@ -35,10 +35,10 @@ jobs:
         if: always()
         run: docker rm ytflex
 
-      - name: Pull New Docker Image
+      - name: Create New Image
         if: always()
-        run: docker pull kirellkekw/ytflex:${{ github.sha }}
+        run: docker build -t ytflex .
 
-      - name: Run New Docker Image
+      - name: Run New Image
         if: always()
-        run: docker run --detach --restart always --name ytflex --publish 2002:2002 --env REV_HASH=${{ github.sha }} --volume /softdisk/beer/cdn_root:/downloads kirellkekw/ytflex:${{ github.sha }}
+        run: docker compose up -d

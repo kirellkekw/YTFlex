@@ -12,7 +12,7 @@ class FilenameCollectorPP(PostProcessor):
 
     obj.filenames[-1]
 
-    You might need to use os.path.basename() to get the actual 
+    You might need to use os.path.basename() to get the actual
     filename if you've set a custom directory.
     """
 
@@ -21,5 +21,5 @@ class FilenameCollectorPP(PostProcessor):
         self.filenames = []
 
     def run(self, information):
-        self.filenames.append(information['filepath'])
+        self.filenames.append(information["filepath"])
         return [], information

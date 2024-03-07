@@ -20,7 +20,7 @@ def find_appropriate_res(preferred_res: int | str):
     if preferred_res == str:
         # someone might have accidentally passed with p at the end
         # being the good dev we are, we'll just remove it
-        preferred_res = preferred_res.replace('p', '')
+        preferred_res = preferred_res.replace("p", "")
         try:
             preferred_res = int(preferred_res)  # convert to int
         except ValueError:

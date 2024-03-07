@@ -15,5 +15,5 @@ if __name__ == "__main__":
         port=port,  # check config.yaml for the port
         reload=True,  # reload the server when code changes,
         log_level="info",  # log level, change to "debug" for more verbose logging
-        loop="asyncio"  # use asyncio event loop for sub-processes
+        loop="asyncio",  # use asyncio event loop for sub-processes
     )

@@ -1,6 +1,9 @@
 # YTFlex
+[![Docker Hub](https://img.shields.io/badge/Docker%20Hub%20Repository-%230db7ed.svg?logo=docker&logoColor=white)](https://hub.docker.com/r/kirellkekw/ytflex)
 
-[![Pylint](https://github.com/kirellkekw/YTFlex/actions/workflows/pylint.yml/badge.svg)](https://github.com/kirellkekw/YTFlex/actions/workflows/pylint.yml)
+[![Pylint](https://github.com/kirellkekw/YTFlex/actions/workflows/pylint.yml/badge.svg)](https://github.com/pylint-dev/pylint)
+[![Build, Push and Deploy](https://github.com/kirellkekw/YTFlex/actions/workflows/deploy_to_server.yml/badge.svg)](https://github.com/kirellkekw/YTFlex/actions/workflows/deploy_to_server.yml)
+[![Black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Deployment ready, easy to use and fast YouTube downloader API written in Python with CDN and reverse proxy setup guide.
 
@@ -11,11 +14,9 @@ Deployment ready, easy to use and fast YouTube downloader API written in Python 
 [![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](<https://www.linux.org/>)
 [![Nix](https://img.shields.io/badge/NIX-5277C3.svg?style=for-the-badge&logo=NixOS&logoColor=white)](<https://nixos.org/>)
 
-and [![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)](<https://www.postgresql.org/>) soon!
-
 # 1- Requirements
 
-This guide assumes you have a Linux machine, a public IP address, or a domain name, and the required storage space for the downloaded files.
+This guide assumes you have a Linux machine with root access, a public IP address, or a domain name, and the required storage space for the downloaded files.
 
 ## 1.1- Download the dependencies
 
@@ -27,13 +28,13 @@ For detailed instructions on how to install those, please refer to the following
 * [Docker Install Guide](https://docs.docker.com/engine/install/)
 * [Nginx Install Guide](https://www.nginx.com/resources/wiki/start/topics/tutorials/install/)
 
-# 2- Running API server
+# 2- Running the API server
 
 * Note: Following operations are tested on Podman backend, but should work with Docker as well.
 
-## 2.1- Default installation with Docker
+## 2.1- Basic installation with Docker
 
-* Note: You won't be able to change default settings like maximum file size, file purge timeout and allowed resolutions without building the image yourself. If you want to change those settings, please refer to the advanced installation section.
+* Note: You won't be able to change default settings like maximum file size, file purge timeout and allowed resolutions without building the image yourself. Please refer to the advanced installation section for more information.
 
 ### 2.1.1- Clone the Docker image from Docker Hub
 
@@ -51,15 +52,22 @@ docker run --detach --restart always --name ytflex --publish 2002:2002 --env ip_
 
 ## 2.2- Advanced installation(Recommended)
 
-### 2.2.1- Clone the repository
+### 2.2.1- Clone the repository(and change directory to it)
 
 ```bash
 git clone https://github.com/kirellkekw/YTFlex.git
+cd YTFlex
 ```
 
 ### 2.2.2- Edit the configuration file
 
-* Open the `config.yaml` file and change the settings according to your needs with your favorite text editor. Here's a quick explanation of what each setting does:
+* Open the `config.yaml` file and change the settings according to your needs with your favorite text editor.
+
+```bash
+nvim config.yaml
+```
+
+* Here's a quick explanation of what each setting does:
 
 | Setting | Description | Type |
 | --- | --- | --- |
@@ -72,23 +80,36 @@ git clone https://github.com/kirellkekw/YTFlex.git
 | `show_yt_dlp_output` | Decides if yt_dlp output is printed to the console or not. | `bool` |
 | `allowed_domains` | A list of allowed domains for CORS requests. | `list[str]` |
 
-### 2.2.3- Build the Docker image
+### 2.2.3- Edit the docker-compose file
+
+* Open `docker-compose.yml` and change the values of `volumes` and `ports` keys according to your preference.
 
 ```bash
-docker build -t yt_api:1.0.0 . # including version number is optional, but recommended for tracking changes
+nvim docker-compose.yml
 ```
 
-### 2.2.4- Run the image as a container
-
-* Note: You need to change the `/designated/download/path/` to the path you want to download the files to.
+### 2.2.4- Build the Docker image
 
 ```bash
-docker run --detach --restart always --name ytflex --publish 2002:2002 --volume /designated/download/path/:/downloads yt_api:1.0.0
+sudo docker build -t ytflex .
+```
+
+### 2.2.5- Run the image with docker-compose
+
+```bash
+sudo docker-compose up -d
+```
+
+* You can later stop and remove the container with the following commands:
+
+```bash
+sudo docker stop ytflex
+sudo docker remove ytflex
 ```
 
 # 3- Running the CDN server with Nginx
 
-## 3.1- Create a new server block in your Nginx configuration file, usually located at `/etc/nginx/nginx.conf`
+## 3.1- Create new location blocks in your Nginx configuration file, usually located at `/etc/nginx/nginx.conf`
 
 ```nginx
 # use your favorite text editor add the following to your nginx.conf as you see fit
@@ -108,13 +129,13 @@ http {
 
     location /cdn/ {
       alias /designated/download/path/; # change this to your download path
-      expires 1h;
+      add_header Content-Disposition 'attachment';
     }
   }
 }
 ```
 
-### 3.2- Restart Nginx
+## 3.2- Restart Nginx
 
 * The way you restart Nginx depends on your distro, but in a lot of cases, you can just run the following command to restart Nginx:
 
@@ -122,7 +143,7 @@ http {
 sudo systemctl restart nginx
 ```
 
-### 3.3- Test the server
+## 3.3- Test the server
 
 Try to access the following URL in your browser:
 
@@ -138,11 +159,9 @@ If you get a JSON response with the following content, then you are good to go!
 {"message": "Hello World"}
 ```
 
-# TODO
+# 4- TODO
 
 ***(in no particular order)***
-
-***the rest:***
 
 * [x] Add support for multiple file resolutions
 * [x] Add option to limit the file size of the downloaded files

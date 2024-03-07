@@ -12,8 +12,7 @@ def format_title(title: str, remove_spaces: bool = False) -> str:
         remove_spaces: replace spaces with underscores if set to True
     """
     # not adding these three lines are a great way learn from mistakes, trust me
-    title = title.replace(':', '').replace(
-        "\\", '').replace("/", '').replace(".", '')
+    title = title.replace(":", "").replace("\\", "").replace("/", "").replace(".", "")
 
     # luckily spaces are allowed in filenames, but i'll leave the choice to you
     # just set remove_spaces to True if you want to remove spaces.
@@ -29,13 +28,39 @@ def format_title(title: str, remove_spaces: bool = False) -> str:
         Replaces cyrillic letters in the passed string with latin letters
         """
         cyrillic_to_latin_map = {
-            'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'e',
-            'ж': 'zh', 'з': 'z', 'и': 'i', 'й': 'i', 'к': 'k', 'л': 'l', 'м': 'm',
-            'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u',
-            'ф': 'f', 'х': 'h', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'shch',
-            'ы': 'y', 'э': 'e', 'ю': 'iu', 'я': 'ia'
+            "а": "a",
+            "б": "b",
+            "в": "v",
+            "г": "g",
+            "д": "d",
+            "е": "e",
+            "ё": "e",
+            "ж": "zh",
+            "з": "z",
+            "и": "i",
+            "й": "i",
+            "к": "k",
+            "л": "l",
+            "м": "m",
+            "н": "n",
+            "о": "o",
+            "п": "p",
+            "р": "r",
+            "с": "s",
+            "т": "t",
+            "у": "u",
+            "ф": "f",
+            "х": "h",
+            "ц": "ts",
+            "ч": "ch",
+            "ш": "sh",
+            "щ": "shch",
+            "ы": "y",
+            "э": "e",
+            "ю": "iu",
+            "я": "ia",
         }
-        return ''.join(cyrillic_to_latin_map.get(char.lower(), char) for char in text)
+        return "".join(cyrillic_to_latin_map.get(char.lower(), char) for char in text)
 
     title = cyrillic_to_latin(title)
 

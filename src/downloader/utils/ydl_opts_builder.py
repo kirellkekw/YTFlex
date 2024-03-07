@@ -4,15 +4,15 @@ Utility function to build the options for yt-dlp.
 
 import os
 import config
-from engine.downloader.utils.find_appropriate_res import find_appropriate_res
+from src.downloader.utils.find_appropriate_res import find_appropriate_res
 
 
 def ydl_opts_builder(
-        title: str,
-        is_video_request: bool,
-        preferred_res: int = 720,
-        convert_to_mp4: bool = False
-    ):
+    title: str,
+    is_video_request: bool,
+    preferred_res: int = 720,
+    convert_to_mp4: bool = False,
+):
     """
     Utility function for building the options for yt-dlp.
 
@@ -37,8 +37,8 @@ def ydl_opts_builder(
         preferred_res = find_appropriate_res(preferred_res)
 
         ydl_opts = {
-            "format": f"bestvideo[height<={preferred_res}][filesize<{max_file_size}M]+" +
-            f"bestaudio/best[height<={preferred_res}][filesize<{int(max_file_size/4)}M]",
+            "format": f"bestvideo[height<={preferred_res}][filesize<{max_file_size}M]+"
+            + f"bestaudio/best[height<={preferred_res}][filesize<{int(max_file_size/4)}M]",
             "outtmpl": os.path.join(download_path, f"{title}-%(height)sp.%(ext)s"),
             "windowsfilenames": True,
             "quiet": not show_yt_dlp_output,
@@ -46,17 +46,22 @@ def ydl_opts_builder(
 
         if convert_to_mp4:
             ydl_opts["postprocessors"] = [
-                {"key": "FFmpegVideoConvertor", "preferedformat": "mp4"}]
+                {"key": "FFmpegVideoConvertor", "preferedformat": "mp4"}
+            ]
 
     else:
         ydl_opts = {
-            'format': f"bestaudio/best[filesize<{int(max_file_size)}M]",
+            "format": f"bestaudio/best[filesize<{int(max_file_size)}M]",
             "outtmpl": os.path.join(download_path, f"{title}"),
             "windowsfilenames": True,
             "quiet": not show_yt_dlp_output,
-            "postprocessors":
-                [{"key": "FFmpegExtractAudio", "preferredcodec": "mp3",
-                    "preferredquality": "192"}],
+            "postprocessors": [
+                {
+                    "key": "FFmpegExtractAudio",
+                    "preferredcodec": "mp3",
+                    "preferredquality": "192",
+                }
+            ],
         }
 
     return ydl_opts

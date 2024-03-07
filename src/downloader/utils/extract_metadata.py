@@ -4,10 +4,9 @@ Utility file to extract metadata from a video.
 
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
-from engine.downloader.utils.video_info import VideoInfo
-from engine.downloader.utils.format_title import format_title
+from src.downloader.utils.video_info import VideoInfo
+from src.downloader.utils.format_title import format_title
 import config
-
 
 
 def extract_info(url: str):
@@ -17,7 +16,8 @@ def extract_info(url: str):
 
     try:
         info = YoutubeDL({"quiet": not show_yt_dlp_output}).extract_info(
-            url=url, download=False)
+            url=url, download=False
+        )
     except DownloadError:
         # if the video is unavailable, we'll just skip it
         return None

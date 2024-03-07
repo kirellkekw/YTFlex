@@ -6,8 +6,8 @@ import asyncio
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from engine.api_handler.side_processes.base import purge_old_files
-from engine.downloader.runner import download_files
+from src.api_handler.side_processes.base import purge_old_files
+from src.downloader.runner import download_files
 import config
 
 
@@ -41,8 +41,7 @@ async def root():
     if revision_hash is None:
         return message
 
-    return {"message": "Hello World",
-            "revision_hash": revision_hash[:7]}
+    return {"message": "Hello World", "revision_hash": revision_hash[:7]}
 
 
 @app.get("/download/audio")
@@ -61,6 +60,7 @@ async def video_download(link: str, res: int, mp4: bool = False):
     if "," in link:
         link = link.split(",")
     raw_dl_info = download_files(
-        passed_urls=link, is_video_request=True, preferred_res=res, convert_to_mp4=mp4)
+        passed_urls=link, is_video_request=True, preferred_res=res, convert_to_mp4=mp4
+    )
 
     return raw_dl_info

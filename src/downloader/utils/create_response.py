@@ -6,11 +6,12 @@ import os
 
 
 def create_response(
-        cdn_link: str,
-        thumbnail: str,
-        filename: str,
-        duration: int,
-        already_downloaded: bool):
+    cdn_link: str,
+    thumbnail: str,
+    filename: str,
+    duration: int,
+    already_downloaded: bool,
+):
     """
     Creates and returns a response object for the client.
 
@@ -39,8 +40,8 @@ def create_response(
                 "thumbnail": thumbnail,
                 "already_downloaded": already_downloaded,
                 "filename": filename,
-                "extension": os.path.splitext(filename)[1]
-            }
+                "extension": os.path.splitext(filename)[1],
+            },
         }
     ]
 

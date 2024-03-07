@@ -16,6 +16,11 @@ def is_valid_url(link: str) -> bool:
     """
     if len(link) == 11:
         # probably a video id, check if the link is alive
-        return requests.head(f"https://www.youtube.com/watch?v={link}",timeout=5).status_code == 200
+        return (
+            requests.head(
+                f"https://www.youtube.com/watch?v={link}", timeout=5
+            ).status_code
+            == 200
+        )
 
     return requests.head(link, timeout=5).status_code == 200

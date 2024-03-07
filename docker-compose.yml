@@ -1,0 +1,12 @@
+# all values can be changed to your liking, provided you know what you are doing
+version: '3'
+
+services:
+  ytflex:
+    image: ytflex:latest
+    container_name: ytflex
+    restart: always
+    ports:
+      - "2002:2002"
+    volumes:
+      - /app/ytflex/cdn/:/downloads/

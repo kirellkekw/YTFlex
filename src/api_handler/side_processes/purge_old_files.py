@@ -20,8 +20,7 @@ async def purge_old_files():
         await asyncio.sleep(60)  # check every minute
         for file in os.listdir(download_path):
             # get creation time of file
-            last_change = os.path.getctime(
-                os.path.join(download_path, file))
+            last_change = os.path.getctime(os.path.join(download_path, file))
             now = time.time()
             file_age = int(now - last_change)
             # print(file, file_age)
