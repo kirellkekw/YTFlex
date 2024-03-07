@@ -12,13 +12,13 @@ jobs:
         run: docker stop ytflex
 
       - name: Remove Old Container
-        if: always()
         run: docker rm ytflex
 
       - name: Create New Image
-        if: always()
         run: docker build -t ytflex .
 
+      - name: Set Revision Hash
+        run: docker compose run --env REV_HASH=${{ github.sha }}
+
       - name: Run New Image
-        if: always()
-        run: docker compose up -d -e REV_HASH=${{ github.sha }}
+        run: docker compose up -d
