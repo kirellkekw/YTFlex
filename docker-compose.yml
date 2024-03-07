@@ -11,5 +11,5 @@ services:
     volumes:
       - /app/ytflex/cdn/:/downloads/
     env_file:
-      - path: ./.env
+      - path: "./.env"
         required: false
