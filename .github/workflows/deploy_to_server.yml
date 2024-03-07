@@ -18,7 +18,7 @@ jobs:
         run: docker build -t ytflex .
 
       - name: Set Revision Hash
-        run: docker compose run --env REV_HASH=${{ github.sha }}
+        run: docker compose run --env REV_HASH=${{ github.sha }} ytflex
 
       - name: Run New Image
         run: docker compose up -d
