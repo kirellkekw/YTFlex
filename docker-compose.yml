@@ -10,3 +10,6 @@ services:
       - "2002:2002"
     volumes:
       - /app/ytflex/cdn/:/downloads/
+    env_file:
+      - path: ./.env
+        required: false
