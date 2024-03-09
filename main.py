@@ -13,7 +13,7 @@ if __name__ == "__main__":
         "src.api_handler.app:app",
         host="0.0.0.0",  # listen on all interfaces, won't matter since it's running in a container
         port=port,  # check config.yaml for the port
-        reload=True,  # reload the server when code changes,
+        reload=False,  # reload when code changes, useful for development, disable otherwise
         log_level="info",  # log level, change to "debug" for more verbose logging
         loop="asyncio",  # use asyncio event loop for sub-processes
     )
