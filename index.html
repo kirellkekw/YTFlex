@@ -137,17 +137,18 @@
             <button onclick="setResolution(1080)" id="btn-1080">1080p</button>
         </div>
         <div class="codec-buttons" id="codec-buttons">
-            <button onclick="setCodec('mp4')" id="btn-mp4">MP4</button>
-            <button onclick="setCodec('webm')" id="btn-webm">WEBM</button>
+            <button onclick="setCodec()" id="btn-mp4" type="checkbox">MP4</button>
         </div>
         <div class="download-button">
             <button onclick="constructUrl()">Get Download URL</button>
+            <div id="download-link"></div>
         </div>
         <div class="dl_link" id="download-url"></div>
     </div>
 
     <script>
         var selectedType = 'video'; // Default selected type
+        var selectedCodec = 0;
 
         function setResolution(resolution) {
             // Store selected resolution in a global variable
@@ -165,20 +166,17 @@
             selectedButton.classList.add('selected');
         }
 
-        function setCodec(codec) {
+        function setCodec() {
             // Store selected codec in a global variable
-            window.selectedCodec = codec;
-
-            // Remove 'selected' class from all buttons
-            var buttons = document.querySelectorAll('.codec-buttons button');
-            buttons.forEach(button => {
-                button.classList.remove('selected');
-            });
-
-            // Add 'selected' class to the clicked button
-            var buttonId = "btn-" + codec;
-            var selectedButton = document.getElementById(buttonId);
-            selectedButton.classList.add('selected');
+            window.selectedCodec = window.selectedCodec === 1 ? 0 : 1;
+            
+            var selectedButton = document.getElementById("btn-mp4");
+            
+            if (window.selectedCodec === 1) {
+                selectedButton.classList.add('selected');
+            } else {
+                selectedButton.classList.remove('selected');
+            }
         }
 
         function selectDownloadType(type) {
@@ -205,16 +203,20 @@
         }
 
         function constructUrl() {
-            var rawUrl = document.getElementById("video-url").value;
-            // parse the youtube link to get ID only
+                var rawUrl = document.getElementById("video-url").value;
+                // parse the youtube link to get ID only
 
-            var resolution = window.selectedResolution || 720; // Default to 720p if resolution is not selected
-            var codec = window.selectedCodec || ""; // Get selected codec
-            var downloadUrl = "http://5.178.111.177/yt_api/download/" + (selectedType === 'audio' ? 'audio' : 'video') + "?link=" + encodeURIComponent(rawUrl) + (selectedType === 'video' ? ("&res=" + resolution) : "") + (codec ? ("&codec=" + codec) : "");
+                var resolution = window.selectedResolution || 720; // Default to 720p if resolution is not selected
+                var codec = window.selectedCodec || ""; // Get selected codec
+                var downloadUrl = "http://5.178.111.177/yt_api/download/" + (selectedType === 'audio' ? 'audio' : 'video') + "?link=" + encodeURIComponent(rawUrl) + (selectedType === 'video' ? ("&res=" + resolution) : "") + (codec ? ("&mp4=" + codec) : "");
 
-            // Display the constructed URL
-            document.getElementById("download-url").textContent = downloadUrl;
-        }
+                // Convert the URL into a clickable hyperlink
+                var downloadLink = '<a href="' + downloadUrl + '" target="_blank">' + downloadUrl + '</a>';
+
+                // Display the constructed URL as a clickable hyperlink
+                document.getElementById("download-url").innerHTML = downloadLink;
+
+            }
     </script>
 </body>
 
