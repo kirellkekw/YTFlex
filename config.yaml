@@ -17,7 +17,7 @@ RES_LIST: # type: list[int]
 # This only limits the filesize of the video, not the audio.
 # If a video is 97mb and audio is 5mb, the video will be 102mb and will be downloaded anyway.
 # Max audio file size is the same when downloading audio only.
-MAX_FILE_SIZE: 100 # type: int
+MAX_FILE_SIZE: 200 # type: int
 
 # The directory to download the videos to.
 # Should be the same as the one in nginx and docker command, or it won't work.
@@ -30,7 +30,7 @@ PORT: 2002 # type: int
 # The IP or domain to use when generating the download link.
 # Has no effect on nginx or docker command, but is used in the API message returned.
 # Passing environment variable from docker run command will override this.
-IP_OR_DOMAIN: "5.178.111.177" # type: str
+IP_OR_DOMAIN: "ihateall.tech" # type: str
 
 # Max file age in seconds.
 # 3600 = 1 hour, 86400 = 1 day, 604800 = 1 week

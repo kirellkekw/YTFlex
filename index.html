@@ -208,7 +208,7 @@
 
                 var resolution = window.selectedResolution || 720; // Default to 720p if resolution is not selected
                 var codec = window.selectedCodec || ""; // Get selected codec
-                var downloadUrl = "http://5.178.111.177/yt_api/download/" + (selectedType === 'audio' ? 'audio' : 'video') + "?link=" + encodeURIComponent(rawUrl) + (selectedType === 'video' ? ("&res=" + resolution) : "") + (codec ? ("&mp4=" + codec) : "");
+                var downloadUrl = "http://ihateall.tech/yt_api/download/" + (selectedType === 'audio' ? 'audio' : 'video') + "?link=" + encodeURIComponent(rawUrl) + (selectedType === 'video' ? ("&res=" + resolution) : "") + (codec ? ("&mp4=" + codec) : "");
 
                 // Convert the URL into a clickable hyperlink
                 var downloadLink = '<a href="' + downloadUrl + '" target="_blank">' + downloadUrl + '</a>';
