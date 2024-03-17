@@ -1,4 +1,5 @@
 # YTFlex
+
 [![Docker Hub](https://img.shields.io/badge/Docker%20Hub%20Repository-%230db7ed.svg?logo=docker&logoColor=white)](https://hub.docker.com/r/kirellkekw/ytflex)
 
 [![Pylint](https://github.com/kirellkekw/YTFlex/actions/workflows/pylint.yml/badge.svg)](https://github.com/pylint-dev/pylint)
@@ -14,7 +15,7 @@ Deployment ready, easy to use and fast YouTube downloader API written in Python 
 [![Linux](https://img.shields.io/badge/Linux-FCC624?style=for-the-badge&logo=linux&logoColor=black)](<https://www.linux.org/>)
 [![Nix](https://img.shields.io/badge/NIX-5277C3.svg?style=for-the-badge&logo=NixOS&logoColor=white)](<https://nixos.org/>)
 
-# 1- Requirements
+# 1- Installing the requirements
 
 This guide assumes you have a Linux machine with root access, a public IP address, or a domain name, and the required storage space for the downloaded files.
 
@@ -28,44 +29,20 @@ For detailed instructions on how to install those, please refer to the following
 * [Docker Install Guide](https://docs.docker.com/engine/install/)
 * [Nginx Install Guide](https://www.nginx.com/resources/wiki/start/topics/tutorials/install/)
 
-# 2- Running the API server
+# 2- Setting up the API server with Docker
 
-* Note: Following operations are tested on Podman backend, but should work with Docker as well.
+* This guide has been tested on NixOS with distro specific commands on both Docker and Podman OCI runtimes, but it has been written with the assumption that you are using Docker on a Debian based distro. If you are using a different distro, you might need to change the commands accordingly.
 
-## 2.1- Basic installation with Docker
-
-* Note: You won't be able to change default settings like maximum file size, file purge timeout and allowed resolutions without building the image yourself. Please refer to the advanced installation section for more information.
-
-### 2.1.1- Clone the Docker image from Docker Hub
-
-```bash
-docker pull kirellkekw/ytflex:latest
-```
-
-### 2.1.2- Run the image as a container
-
-* Note: You need to change the `/designated/download/path/` to the path you want to download the files to, 2002 to the port you want the server to listen on, and `255.255.255.0` to your IP address or domain name.
-
-```bash
-docker run --detach --restart always --name ytflex --publish 2002:2002 --env ip_or_domain=255.255.255.0 --volume /designated/download/path/:/downloads kirellkekw/ytflex:latest
-```
-
-## 2.2- Advanced installation(Recommended)
-
-### 2.2.1- Clone the repository(and change directory to it)
+## 2.1- Clone the repository(and change directory to it)
 
 ```bash
 git clone https://github.com/kirellkekw/YTFlex.git
 cd YTFlex
 ```
 
-### 2.2.2- Edit the configuration file
+## 2.2- Edit the configuration file
 
 * Open the `config.yaml` file and change the settings according to your needs with your favorite text editor.
-
-```bash
-nvim config.yaml
-```
 
 * Here's a quick explanation of what each setting does:
 
@@ -73,28 +50,23 @@ nvim config.yaml
 | --- | --- | --- |
 | `res_list` | A list of resolutions API can attempt to download. | `list[int]` |
 | `max_file_size` | The maximum file size in megabytes the API can download. | `int` |
-| `download_path` | Path to the directory where the downloaded files will be stored. | `str` |
 | `port` | The port the API server will listen on. | `int` |
 | `ip_or_domain` | The address API will use to create a CDN link. If you pass this value in docker run command, config.yaml value will be ignored. | `str` |
 | `max_file_age` | Maximum age of a file in seconds before it gets deleted. | `int` |
 | `show_yt_dlp_output` | Decides if yt_dlp output is printed to the console or not. | `bool` |
 | `allowed_domains` | A list of allowed domains for CORS requests. | `list[str]` |
 
-### 2.2.3- Edit the docker-compose file
+## 2.3- Edit the docker-compose file
 
-* Open `docker-compose.yml` and change the values of `volumes` and `ports` keys according to your preference.
+* Open `docker-compose.yml` and change the values of `volumes` to the path you want to attach to the container. You can also change the port the container will listen on, but you should also change the Nginx configuration file accordingly.
 
-```bash
-nvim docker-compose.yml
-```
-
-### 2.2.4- Build the Docker image
+## 2.4- Build the Docker image
 
 ```bash
 sudo docker build -t ytflex .
 ```
 
-### 2.2.5- Run the image with docker-compose
+## 2.5- Run the image with docker-compose
 
 ```bash
 sudo docker-compose up -d
@@ -107,37 +79,39 @@ sudo docker stop ytflex
 sudo docker remove ytflex
 ```
 
+* Or you can change directory to the cloned repository and run the following command to stop the container:
+
+```bash
+sudo docker-compose down
+```
+
 # 3- Running the CDN server with Nginx
 
 ## 3.1- Create new location blocks in your Nginx configuration file, usually located at `/etc/nginx/nginx.conf`
 
 ```nginx
-# use your favorite text editor add the following to your nginx.conf as you see fit
-events {}
-http {
-  server {
-    listen 80; 
-    server_name your-ip-address; # add your ip address to here, or your domain name if you have one
+# use your favorite text editor add the following server block to your nginx.conf as you see fit
+server {
+  # other server blocks and listen directives
 
-    location /yt_api/ {
-      proxy_pass http://127.0.0.1:2002/;
-      proxy_set_header Host $host;
-      proxy_set_header X-Real-IP $remote_addr;
-      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_set_header X-Forwarded-Proto $scheme;  
-    }
-
-    location /cdn/ {
-      alias /designated/download/path/; # change this to your download path
-      add_header Content-Disposition 'attachment';
-    }
+  location /yt_api/ {
+    proxy_pass http://127.0.0.1:2002/; # remember to change the port if you have changed it in the docker-compose file
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;  
+  }
+  location /cdn/ {
+    alias /designated/download/path/; # change this to your download path attached to the container
+    add_header Content-Disposition 'attachment'; # forces browser to download the file, not play it
   }
 }
+
 ```
 
 ## 3.2- Restart Nginx
 
-* The way you restart Nginx depends on your distro, but in a lot of cases, you can just run the following command to restart Nginx:
+* The way you restart Nginx depends on your distro, but in a Debian based distro, you can restart Nginx with the following command:
 
 ```bash
 sudo systemctl restart nginx
@@ -148,10 +122,6 @@ sudo systemctl restart nginx
 Try to access the following URL in your browser:
 
 `http://localhost/yt_api/root`
-
-or if you're running it without a reverse proxy:
-
-`http://localhost:2002/root`
 
 If you get a JSON response with the following content, then you are good to go!
 
@@ -186,7 +156,7 @@ If you get a JSON response with the following content, then you are good to go!
   * [ ] The file is too large
   * [ ] The file is too long
   * [ ] The file is not available in the requested resolution
-* [ ] Add support to Postgres for:
+* [ ] Add support to sqlite database for:
   * [ ] Logging downloads
   * [ ] Logging errors
   * [ ] Logging file purges

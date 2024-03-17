@@ -28,8 +28,8 @@ def ydl_opts_builder(
         Will have no effect if downloading audio only.
     """
 
+    download_path = "./downloads"
     max_file_size = config.get("MAX_FILE_SIZE")
-    download_path = config.get("DOWNLOAD_PATH")
     show_yt_dlp_output = config.get("SHOW_YT_DLP_OUTPUT")
 
     if is_video_request:

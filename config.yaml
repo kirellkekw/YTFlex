@@ -19,10 +19,6 @@ RES_LIST: # type: list[int]
 # Max audio file size is the same when downloading audio only.
 MAX_FILE_SIZE: 200 # type: int
 
-# The directory to download the videos to.
-# Should be the same as the one in nginx and docker command, or it won't work.
-DOWNLOAD_PATH: "./downloads" # type: str
-
 # The port to run the API server on.
 # Should be the same as the one in nginx and docker command, or it won't work.
 PORT: 2002 # type: int

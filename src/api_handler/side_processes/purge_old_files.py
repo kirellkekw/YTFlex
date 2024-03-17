@@ -13,8 +13,8 @@ async def purge_old_files():
 
     print("File purge subprocess started.")  # debug
 
+    download_path = "./downloads"
     while True:
-        download_path = config.get("DOWNLOAD_PATH")
         max_file_age = config.get("MAX_FILE_AGE")
 
         await asyncio.sleep(60)  # check every minute
