@@ -10,15 +10,17 @@ hot swapping values without restarting the server.
 import yaml
 
 
-def get(setting_name: str) -> any:
+def get(setting_name: str, default_value) -> any:
     """
     Returns the value of the setting with the given name.
-    Returns 4 different types of values depending on setting, so type hinting will be hardly useful.
-    Hence, the return type is set to any.
+    If the setting is not found, returns None, or the default value if it is provided.
     Check the config.yaml file for the type and value of the setting.
     """
     with open("config.yaml", "r", encoding="UTF_8") as file:
         # safe_load is used to prevent code execution from the file
         cfg = yaml.safe_load(file)
         file.close()  # closing the file allows the file to be modified
-    return cfg[setting_name]
+    if cfg[setting_name]:
+        return cfg[setting_name]
+
+    return default_value
