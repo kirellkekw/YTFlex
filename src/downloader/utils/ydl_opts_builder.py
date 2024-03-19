@@ -28,7 +28,7 @@ def ydl_opts_builder(
         Will have no effect if downloading audio only.
     """
 
-    download_path = "./downloads"
+    download_path = "./mountpoint/downloads"
     max_file_size = config.get("MAX_FILE_SIZE")
     show_yt_dlp_output = config.get("SHOW_YT_DLP_OUTPUT")
 

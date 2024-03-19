@@ -9,6 +9,4 @@ services:
     ports:
       - "2002:2002"
     volumes:
-      - /app/ytflex/cdn/:/downloads/
-    environment:
-      - REV_HASH = ${REV_HASH}
+      - /app/ytflex/:/mountpoint/
