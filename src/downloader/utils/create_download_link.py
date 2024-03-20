@@ -16,4 +16,4 @@ def create_download_link(filename: str):
 
     ip_or_domain = os.getenv("ip_or_domain", config.get("IP_OR_DOMAIN"))
 
-    return f"http://{ip_or_domain}/cdn/{quote(filename)}"
+    return f"{ip_or_domain}/cdn/{quote(filename)}"
