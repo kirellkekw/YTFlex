@@ -90,11 +90,11 @@ sudo docker-compose down
 ## 3.1- Create new location blocks in your Nginx configuration file, usually located at `/etc/nginx/nginx.conf`
 
 ```nginx
-# use your favorite text editor add the following server block to your nginx.conf as you see fit
+# use your favorite text editor add the following server blocks to your nginx.conf as you see fit
 server {
   # other server blocks and listen directives
 
-  location /yt_api/ {
+  location /ytflex/ {
     proxy_pass http://127.0.0.1:2002/; # remember to change the port if you have changed it in the docker-compose file
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
@@ -102,8 +102,8 @@ server {
     proxy_set_header X-Forwarded-Proto $scheme;  
   }
   location /cdn/ {
-    alias /designated/download/path/; # change this to your download path attached to the container
-    add_header Content-Disposition 'attachment'; # forces browser to download the file, not play it
+    alias /app/ytflex/downloads/; # change this to your download path attached to the container, or leave as is if you're using the default path
+    add_header Content-Disposition 'attachment'; # forces browser to download the file instead of playing it
   }
 }
 
@@ -121,7 +121,7 @@ sudo systemctl restart nginx
 
 Try to access the following URL in your browser:
 
-`http://localhost/yt_api/root`
+`http://localhost/ytflex/root`
 
 If you get a JSON response with the following content, then you are good to go!
 
