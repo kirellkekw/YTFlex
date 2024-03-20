@@ -10,7 +10,7 @@ hot swapping values without restarting the server.
 import yaml
 
 
-def get(setting_name: str, default_value = None) -> any:
+def get(setting_name: str, default_value=None) -> any:
     """
     Returns the value of the setting with the given name.
     If the setting is not found, returns None, or the default value if it is provided.
@@ -20,7 +20,7 @@ def get(setting_name: str, default_value = None) -> any:
         # safe_load is used to prevent code execution from the file
         cfg = yaml.safe_load(file)
         file.close()  # closing the file allows the file to be modified
-    if cfg[setting_name]:
+    try:
         return cfg[setting_name]
-
-    return default_value
+    except KeyError:
+        return default_value
