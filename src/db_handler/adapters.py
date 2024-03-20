@@ -1,8 +1,9 @@
+# pylint: disable=invalid-name, broad-exception-caught
 """This module contains the IO classes for the tables in the database."""
 
-from src.db_handler.tables import DownloadLog, AbstractIO, API_Key
 from sqlalchemy.orm import Session
 from src.db_handler import _engine
+from src.db_handler.tables import DownloadLog, AbstractIO, API_Key
 
 __all__ = ["DownloadLog_IO", "API_Key_IO", "get_session"]
 
@@ -33,6 +34,7 @@ class DownloadLog_IO(AbstractIO):
         except Exception as e:
             print(e)
             session.rollback()
+            return None
         finally:
             session.close()
 
@@ -44,6 +46,7 @@ class DownloadLog_IO(AbstractIO):
         except Exception as e:
             print(e)
             session.rollback()
+            return None
         finally:
             session.close()
 
@@ -83,6 +86,7 @@ class API_Key_IO(AbstractIO):
         except Exception as e:
             print(e)
             session.rollback()
+            return None
         finally:
             session.close()
 
@@ -94,6 +98,7 @@ class API_Key_IO(AbstractIO):
         except Exception as e:
             print(e)
             session.rollback()
+            return None
         finally:
             session.close()
 

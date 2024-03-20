@@ -1,7 +1,10 @@
+# pylint: disable=invalid-name
+
 """This module contains the SQLAlchemy tables for the database."""
 
 from abc import ABC, abstractmethod
 import datetime
+from dataclasses import dataclass
 from sqlalchemy import (
     Column,
     Integer,
@@ -10,7 +13,7 @@ from sqlalchemy import (
     Boolean,
     SmallInteger,
 )
-from src.db_handler import *
+from src.db_handler import _Base, _engine
 
 __all__ = ["DownloadLog", "API_Key"]
 
@@ -19,22 +22,26 @@ class AbstractIO(ABC):
     """Abstract class for IO operations on the database."""
 
     @abstractmethod
-    def _wipe(self):
+    @staticmethod
+    def _wipe():
         """Deletes all entries in the table. Use with caution, or not at all."""
 
     @abstractmethod
-    def get(self, entry_id: int):
+    @staticmethod
+    def get(entry_id: int):
         """Returns the entry with the given id."""
 
     @abstractmethod
-    def get_all(self):
+    @staticmethod
+    def get_all():
         """Returns all entries in the table."""
 
     @abstractmethod
-    def delete(self, entry_id: int):
+    @staticmethod
+    def delete(entry_id: int):
         """Deletes the entry with the given id."""
 
-
+@dataclass
 class DownloadLog(_Base):
     """Table for storing download information."""
 
@@ -60,11 +67,12 @@ class DownloadLog(_Base):
     playlist_url_count = Column(SmallInteger)
     custom_file_life = Column(SmallInteger)
 
-
+@dataclass
 class API_Key(_Base):
     """Table for storing API keys."""
 
-    def default_expiration():
+    @staticmethod
+    def _default_expiration():
         """Returns datetime object of 30 days from now."""
         return datetime.datetime.now() + datetime.timedelta(days=30)
 
@@ -82,7 +90,7 @@ class API_Key(_Base):
     last_used = Column(DateTime)
     last_ip = Column(String(20))
     usage_count = Column(Integer, default=0, autoincrement=True)
-    expires_at = Column(DateTime, default=default_expiration)
+    expires_at = Column(DateTime, default=_default_expiration)
 
 
 _Base.metadata.create_all(_engine)

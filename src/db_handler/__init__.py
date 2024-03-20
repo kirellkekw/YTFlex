@@ -1,7 +1,12 @@
-import config
+"""
+Database handler package for the ytflex project. 
+Contains the database engine and the base object for all tables.
+"""
+
 from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
+import config
 
 __all__ = ["_engine", "_Base"]
 
