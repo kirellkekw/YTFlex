@@ -16,4 +16,5 @@ if __name__ == "__main__":
         reload=False,  # reload when code changes, useful for development, disable otherwise
         log_level="debug",  # log level, "info" or "debug" recommended, "error" for production
         loop="asyncio",  # use asyncio event loop for sub-processes
+        lifespan="on", # run startup and shutdown events, not really sure what this does
     )
