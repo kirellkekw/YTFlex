@@ -49,6 +49,7 @@ cd YTFlex
 | Setting | Description | Type |
 | --- | --- | --- |
 | `res_list` | A list of resolutions API can attempt to download. | `list[int]` |
+| `root_path` | Reverse proxied path to the API. | `str` |
 | `max_file_size` | The maximum file size in megabytes the API can download. | `int` |
 | `port` | The port the API server will listen on. | `int` |
 | `ip_or_domain` | The address API will use to create a CDN link. If you pass this value in docker run command, config.yaml value will be ignored. | `str` |

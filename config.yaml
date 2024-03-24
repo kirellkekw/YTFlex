@@ -12,10 +12,14 @@ RES_LIST: # type: list[int]
   - 240
   - 144
 
+# Reverse proxied path to the API.
+# Required for Swagger UI to work properly.
+ROOT_PATH: "/ytflex"
+
 # Maximum file size in megabytes. If a resolution is not available due to this limitation,
 # it will download the next best resolution.
 # This only limits the filesize of the video, not the audio.
-# If a video is 97mb and audio is 5mb, the video will be 102mb and will be downloaded anyway.
+# If a video is 197mb and audio is 5mb, the video will be 202mb and will be downloaded anyway.
 # Max audio file size is the same when downloading audio only.
 MAX_FILE_SIZE: 200 # type: int
 
@@ -39,3 +43,4 @@ SHOW_YT_DLP_OUTPUT: true # type: bool
 # Sets the allowed domains for CORS requests. Add a * only if you want to allow all domains.
 ALLOWED_DOMAINS: # type: list[str]
   - "https://ytflex.vercel.app"
+  - "https://ihateall.tech"
