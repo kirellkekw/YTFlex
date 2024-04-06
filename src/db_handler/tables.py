@@ -2,7 +2,7 @@
 
 """This module contains the SQLAlchemy tables for the database."""
 
-from abc import ABC, abstractmethod
+
 import datetime
 from dataclasses import dataclass
 from sqlalchemy import (
@@ -15,31 +15,11 @@ from sqlalchemy import (
 )
 from src.db_handler import _Base, _engine
 
-__all__ = ["DownloadLog", "API_Key"]
+__all__ = [
+    "DownloadLog",
+    "API_Key",
+]  # classes the objects of which are to be used in the code
 
-
-class AbstractIO(ABC):
-    """Abstract class for IO operations on the database."""
-
-    @abstractmethod
-    @staticmethod
-    def _wipe():
-        """Deletes all entries in the table. Use with caution, or not at all."""
-
-    @abstractmethod
-    @staticmethod
-    def get(entry_id: int):
-        """Returns the entry with the given id."""
-
-    @abstractmethod
-    @staticmethod
-    def get_all():
-        """Returns all entries in the table."""
-
-    @abstractmethod
-    @staticmethod
-    def delete(entry_id: int):
-        """Deletes the entry with the given id."""
 
 @dataclass
 class DownloadLog(_Base):
@@ -53,10 +33,10 @@ class DownloadLog(_Base):
     time_of_request = Column(
         DateTime, nullable=False, default=datetime.datetime.now
     )  # pass the time of the request no matter what
-    status_code = Column(SmallInteger)  # inside codes for the status of the download
     type_of_request = Column(
         String(10), nullable=False
     )  # type of request, either "video", "audio", "playlist_video" or "playlist_audio"
+    status_code = Column(SmallInteger)  # inside codes for the status of the download
     requested_resolution = Column(SmallInteger)
     downloaded_resolution = Column(SmallInteger)
     title = Column(String(100))
@@ -66,6 +46,7 @@ class DownloadLog(_Base):
     time_of_response = Column(DateTime)
     playlist_url_count = Column(SmallInteger)
     custom_file_life = Column(SmallInteger)
+
 
 @dataclass
 class API_Key(_Base):
@@ -80,13 +61,13 @@ class API_Key(_Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     key = Column(String(40), nullable=False)
     owner = Column(String(40), nullable=False)
+    created_at = Column(DateTime, nullable=False, default=datetime.datetime.now)
     tier = Column(SmallInteger, default=1)
     is_active = Column(Boolean, default=True)
     additional_file_life_requested = Column(SmallInteger, default=0)  # in hours
     credits_used = Column(
         Integer, default=0
     )  # hours * video size, no penalty for < 1 hour
-    created_at = Column(DateTime, nullable=False, default=datetime.datetime.now)
     last_used = Column(DateTime)
     last_ip = Column(String(20))
     usage_count = Column(Integer, default=0, autoincrement=True)

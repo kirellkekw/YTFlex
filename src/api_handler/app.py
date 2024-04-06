@@ -1,19 +1,16 @@
 """
-This file contains the FastAPI app and the routes for the API.
+This file contains the FastAPI app.
+It also runs the sub-processes in the background.
 """
 
 import asyncio
-import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src.api_handler.side_processes.base import purge_old_files
-from src.downloader.runner import download_files
 import config
 
 
-revision_hash = os.getenv("REV_HASH")
-
-app = FastAPI()
+app = FastAPI(docs_url="/docs", redoc_url=None)
 origins = config.get("ALLOWED_DOMAINS")
 
 # Add CORS middleware
@@ -30,37 +27,3 @@ app.add_middleware(
 async def startup_event():
     """Creates sub-processes to run in the background when the server starts."""
     asyncio.create_task(purge_old_files())
-
-
-@app.get("/root")
-async def root():
-    """To check if the server is running without much hassle."""
-
-    message = {"message": "Hello World"}
-
-    if revision_hash is None:
-        return message
-
-    return {"message": "Hello World", "revision_hash": revision_hash[:7]}
-
-
-@app.get("/download/audio")
-async def audio_download(link: str):
-    """API route for downloading audio files."""
-    if "," in link:
-        link = link.split(",")
-    raw_dl_info = download_files(passed_urls=link, is_video_request=False)
-
-    return raw_dl_info
-
-
-@app.get("/download/video")
-async def video_download(link: str, res: int, mp4: bool = False):
-    """API route for downloading video files."""
-    if "," in link:
-        link = link.split(",")
-    raw_dl_info = download_files(
-        passed_urls=link, is_video_request=True, preferred_res=res, convert_to_mp4=mp4
-    )
-
-    return raw_dl_info

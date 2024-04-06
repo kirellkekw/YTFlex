@@ -13,7 +13,8 @@ from src.downloader.utils.ydl_opts_builder import ydl_opts_builder
 from src.downloader.utils.format_title import format_title
 from src.downloader.utils.is_playlist import is_playlist
 from src.downloader.utils.is_valid_url import is_valid_url
-from src.downloader.utils.extract_playlist_metadata import parse_playlist
+
+# from src.downloader.utils.extract_playlist_metadata import parse_playlist
 
 # from engine.downloader.utils.check_if_file_exists import check_if_file_exists
 
@@ -28,5 +29,5 @@ __all__ = [
     "format_title",
     "is_playlist",
     "is_valid_url",
-    "parse_playlist",
+    #      "parse_playlist",
 ]

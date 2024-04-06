@@ -12,9 +12,12 @@ import yaml
 
 def get(setting_name: str, default_value=None) -> any:
     """
-    Returns the value of the setting with the given name.
-    If the setting is not found, returns None, or the default value if it is provided.
-    Check the config.yaml file for the type and value of the setting.
+    Basically an `os.getenv()` function but for the config.yaml file.
+
+    Returns the value of a setting from the config.yaml file with the given `setting_name`.
+
+    If the `setting_name` is not found, the `default_value` is returned if provided,
+    otherwise `None` is returned.
     """
     with open("config.yaml", "r", encoding="UTF_8") as file:
         # safe_load is used to prevent code execution from the file

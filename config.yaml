@@ -1,5 +1,14 @@
 # Configuration options for the API
 
+# Reverse proxied path to the API.
+# Required for Swagger UI to work properly.
+# Sync with: nginx reverse proxied path
+ROOT_PATH: "/ytflex" # type: str
+
+# The port to run the API server on.
+# Sync with: docker-compose port argument, nginx reverse proxied port
+PORT: 2002 # type: int
+
 # The resolutions the API can attempt to download.
 # Comment out any resolution you don't want to be available.
 RES_LIST: # type: list[int]
@@ -12,20 +21,12 @@ RES_LIST: # type: list[int]
   - 240
   - 144
 
-# Reverse proxied path to the API.
-# Required for Swagger UI to work properly.
-ROOT_PATH: "/ytflex"
-
 # Maximum file size in megabytes. If a resolution is not available due to this limitation,
 # it will download the next best resolution.
 # This only limits the filesize of the video, not the audio.
 # If a video is 197mb and audio is 5mb, the video will be 202mb and will be downloaded anyway.
 # Max audio file size is the same when downloading audio only.
 MAX_FILE_SIZE: 200 # type: int
-
-# The port to run the API server on.
-# Should be the same as the one in nginx and docker command, or it won't work.
-PORT: 2002 # type: int
 
 # The IP or domain to use when generating the download link.
 # Has no effect on nginx or docker command, but is used in the API message returned.
@@ -40,7 +41,9 @@ MAX_FILE_AGE: 3600 # type: int
 # If set to false, the output from yt-dlp will not be shown.
 SHOW_YT_DLP_OUTPUT: true # type: bool
 
-# Sets the allowed domains for CORS requests. Add a * only if you want to allow all domains.
+# Sets the allowed domains for CORS requests.
+# If the request is not from one of these domains, it will be rejected.
+# If you want to allow all domains, remove the already present domains and add "*".
 ALLOWED_DOMAINS: # type: list[str]
+  - "https://ihateall.tech" # subdomains are allowed by default
   - "https://ytflex.vercel.app"
-  - "https://ihateall.tech"

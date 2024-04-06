@@ -60,11 +60,14 @@ def download_files(
 
         # check if url is playlist
         if is_playlist(passed_urls):
-            parsed_links_list = parse_playlist(passed_urls)
+            return create_error_response(
+                "Can't download playlists. Please try again with a single video."
+            )
+            # this will be re-enabled once i figure out the rest of the code.
+            # parsed_links_list = parse_playlist(passed_urls)
 
         # if not a playlist then it's a single video
-        else:
-            parsed_links_list.append(extract_info(passed_urls))
+        parsed_links_list.append(extract_info(passed_urls))
 
     elif isinstance(passed_urls, list):
         for video in passed_urls:
@@ -105,13 +108,6 @@ def download_files(
         ydl_opts = ydl_opts_builder(
             video.title, is_video_request, preferred_res, convert_to_mp4
         )
-
-        # TODO: check if file exists
-        # file = check_if_file_exists(video.title, is_video_request)
-        # if file:
-        #     # file exists and we have it's name, no need to download it again
-        #     filename = file
-        # else:
 
         # create a download object
         filename_collector = FilenameCollectorPP()
