@@ -1,7 +1,8 @@
 # pylint: disable=invalid-name
+#
+# API_Key is technically not PascalCase
 
 """This module contains the SQLAlchemy tables for the database."""
-
 
 import datetime
 from dataclasses import dataclass
@@ -13,12 +14,18 @@ from sqlalchemy import (
     Boolean,
     SmallInteger,
 )
+from sqlalchemy.orm import Session
 from src.db_handler import _Base, _engine
 
 __all__ = [
     "DownloadLog",
-    "API_Key",
+    "Api_Key",
 ]  # classes the objects of which are to be used in the code
+
+
+def get_session():
+    """Returns a new session to the database."""
+    return Session(_engine)
 
 
 @dataclass
@@ -49,7 +56,7 @@ class DownloadLog(_Base):
 
 
 @dataclass
-class API_Key(_Base):
+class Api_Key(_Base):
     """Table for storing API keys."""
 
     @staticmethod

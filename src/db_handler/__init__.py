@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base
 import config
 
-__all__ = ["_engine", "_Base"]
+__all__ = ["_engine", "_Base"]  # private namespace since it won't leave the package
 
 _db_string = config.get(
     "database_url",
