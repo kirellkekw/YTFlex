@@ -7,6 +7,7 @@ config.yaml file is read seperately every time the get function is called to all
 hot swapping values without restarting the server.
 """
 
+import os
 import yaml
 
 
@@ -19,7 +20,11 @@ def get(setting_name: str, default_value=None) -> any:
     If the `setting_name` is not found, the `default_value` is returned if provided,
     otherwise `None` is returned.
     """
-    with open("config.yaml", "r", encoding="UTF_8") as file:
+
+    this_dir = os.path.dirname(os.path.abspath(__file__))
+    config_path = os.path.join(this_dir, "config.yaml")
+
+    with open(config_path, "r", encoding="UTF_8") as file:
         # safe_load is used to prevent code execution from the file
         cfg = yaml.safe_load(file)
         file.close()  # closing the file allows the file to be modified

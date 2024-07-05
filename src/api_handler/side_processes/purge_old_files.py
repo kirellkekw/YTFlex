@@ -14,6 +14,10 @@ async def purge_old_files():
     print("File purge subprocess started.")  # debug
 
     download_path = "./mountpoint/downloads"
+    # create mountpoint if it doesn't exist
+    if not os.path.exists(download_path):
+        os.makedirs(download_path)
+
     while True:
         max_file_age = config.get("MAX_FILE_AGE")
 
