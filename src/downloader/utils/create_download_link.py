@@ -15,6 +15,5 @@ def create_download_link(filename: str):
     """
 
     ip_or_domain = os.getenv("ip_or_domain", config.get("IP_OR_DOMAIN"))
-    root_path = os.getenv("root_path", config.get("ROOT_PATH", "/ytflex"))
 
-    return f"{ip_or_domain}/{root_path}/cdn/{quote(filename)}"
+    return f"{ip_or_domain}/ytflex-cdn/{quote(filename)}"
