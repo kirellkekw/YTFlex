@@ -102,7 +102,7 @@ server {
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     proxy_set_header X-Forwarded-Proto $scheme;  
   }
-  location /cdn/ {
+  location /ytflex/cdn/ {
     alias /app/ytflex/downloads/; # change this to your download path attached to the container, or leave as is if you're using the default path
     add_header Content-Disposition 'attachment'; # forces browser to download the file instead of playing it
   }
