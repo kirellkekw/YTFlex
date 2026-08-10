@@ -26,14 +26,17 @@ def ydl_opts_builder(
         convert_to_mp4: Whether to convert the downloaded file to mp4 or not. Defaults to False.
         Will have no effect if downloading audio only.
     """
-
     download_path = "./mountpoint/downloads"
     max_file_size = config.get("MAX_FILE_SIZE")
     show_yt_dlp_output = config.get("SHOW_YT_DLP_OUTPUT")
 
     if is_video_request:
-        # format string for yt-dlp
         preferred_res = parse_requested_resolution(preferred_res)
+
+        if convert_to_mp4:
+            max_file_size = int(
+                max_file_size / 10
+            )  # mp4 conversion is very compute hungry, so we need to be more strict with the file size limit
 
         ydl_opts = {
             "format": f"bestvideo[height<={preferred_res}][filesize<{max_file_size}M]+"
@@ -41,12 +44,14 @@ def ydl_opts_builder(
             "outtmpl": os.path.join(download_path, f"{title}-%(height)sp.%(ext)s"),
             "windowsfilenames": True,
             "quiet": not show_yt_dlp_output,
+            "postprocessors": [{"key": "FFmpegMetadata", "add_chapters": True}],
         }
 
         if convert_to_mp4:
-            ydl_opts["postprocessors"] = [
-                {"key": "FFmpegVideoConvertor", "preferedformat": "mp4"}
-            ]
+            # Insert conversion at the start of the list
+            ydl_opts["postprocessors"].insert(
+                0, {"key": "FFmpegVideoConvertor", "preferedformat": "mp4"}
+            )
 
     else:
         ydl_opts = {
@@ -54,12 +59,17 @@ def ydl_opts_builder(
             "outtmpl": os.path.join(download_path, f"{title}"),
             "windowsfilenames": True,
             "quiet": not show_yt_dlp_output,
+            "writethumbnail": True,  # Required for EmbedThumbnail
             "postprocessors": [
                 {
                     "key": "FFmpegExtractAudio",
                     "preferredcodec": "mp3",
                     "preferredquality": "192",
-                }
+                },
+                # This fills the ID3 tags (Artist, Title, etc.) from YT metadata
+                {"key": "FFmpegMetadata", "add_metadata": True},
+                # Converts webp/etc to jpg so Jellyfin's music scanner sees it
+                {"key": "EmbedThumbnail", "already_have_thumbnail": False},
             ],
         }
 

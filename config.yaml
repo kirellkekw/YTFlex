@@ -30,7 +30,7 @@ MAX_FILE_AGE: 3600 # type: int
 
 # Sets if download jobs should be silent or not.
 # If set to false, the output from yt-dlp will not be shown.
-SHOW_YT_DLP_OUTPUT: false # type: bool
+SHOW_YT_DLP_OUTPUT: true # type: bool
 
 # Sets the allowed domains for CORS requests.
 # If the request is not from one of these domains, it will be rejected.
