@@ -5,8 +5,12 @@ WORKDIR /app
 
 # Install system dependencies first (less likely to change)
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends ffmpeg && \
+    apt-get install -y --no-install-recommends ffmpeg curl unzip && \
     rm -rf /var/lib/apt/lists/*
+
+# Install Deno JS runtime for yt-dlp's YouTube signature extraction
+RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh
+ENV PATH="/usr/local/bin:${PATH}"
 
 # Copy only requirements first for caching
 COPY requirements.txt ./
