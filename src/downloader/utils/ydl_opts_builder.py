@@ -45,25 +45,18 @@ def ydl_opts_builder(
                 max_file_size / 10
             )  # mp4 conversion is very compute hungry, so we need to be more strict with the file size limit
 
-        else:
-            ydl_opts = {
-                "format": f"bestaudio/best[filesize<{int(max_file_size)}M]",
-                "outtmpl": os.path.join(download_path, f"{title}"),
-                "windowsfilenames": True,
-                "quiet": not show_yt_dlp_output,
-                "writethumbnail": True,  # Required for EmbedThumbnail
-                "postprocessors": [
-                    {
-                        "key": "FFmpegExtractAudio",
-                        "preferredcodec": "mp3",
-                        "preferredquality": "192",
-                    },
-                    {"key": "FFmpegMetadata", "add_metadata": True},
-                    {"key": "EmbedThumbnail", "already_have_thumbnail": False},
-                ],
-                "extractor_args": youtube_extractor_args,
-                "remote_components": remote_components,
-            }
+        ydl_opts = {
+            "format": (
+                f"bestvideo[height<={preferred_res}][filesize<{max_file_size}M]"
+                f"+bestaudio/best[height<={preferred_res}][filesize<{int(max_file_size)}M]"
+            ),
+            "outtmpl": os.path.join(download_path, f"{title}-%(height)sp.%(ext)s"),
+            "windowsfilenames": True,
+            "quiet": not show_yt_dlp_output,
+            "postprocessors": [{"key": "FFmpegMetadata", "add_chapters": True}],
+            "extractor_args": youtube_extractor_args,
+            "remote_components": remote_components,
+        }
 
         if convert_to_mp4:
             # Insert conversion at the start of the list
