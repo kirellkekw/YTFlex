@@ -32,6 +32,7 @@ def extract_info(url: str):
     # get the info we need
     try:
         title = info["title"]
+        title = title.replace("/", "-")  # replace / with - to avoid issues with file paths 
     except KeyError:
         title = ""
     try:
