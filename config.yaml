@@ -5,7 +5,7 @@ ROOT_PATH: "/ytflex" # type: str
 
 CDN_LOCATION: "ytflex-cdn" # type: str
 
-# The port to run the API server on.
+# The port API will listen on. This is the port that the API will be available on.
 # Sync with: docker-compose port argument, nginx reverse proxied port
 PORT: 2002 # type: int
 
@@ -39,3 +39,7 @@ ALLOWED_DOMAINS: # type: list[str]
 #  - "*" # allows all domains, but is not recommended for production
   - "https://ytflex.vercel.app"
   - "https://arda0.net"
+
+# don't change unless you know what you're doing
+# url to internal bgutil provider container, used for youtubepot-bgutilhttp extractor
+BGUTIL_PROVIDER_URL: "http://bgutil-provider:4416" # type: str

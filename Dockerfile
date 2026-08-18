@@ -12,6 +12,8 @@ RUN apt-get update && \
 RUN curl -fsSL https://deno.land/install.sh | DENO_INSTALL=/usr/local sh
 ENV PATH="/usr/local/bin:${PATH}"
 
+RUN yt-dlp --remote-components ejs:github --skip-download "https://www.youtube.com/watch?v=jNQXAC9IVRw" || true
+
 # Copy only requirements first for caching
 COPY requirements.txt ./
 

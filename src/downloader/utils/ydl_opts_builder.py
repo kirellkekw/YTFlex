@@ -29,6 +29,13 @@ def ydl_opts_builder(
     download_path = "./mountpoint/downloads"
     max_file_size = config.get("MAX_FILE_SIZE")
     show_yt_dlp_output = config.get("SHOW_YT_DLP_OUTPUT")
+    bgutil_provider_url = config.get("BGUTIL_PROVIDER_URL")
+
+    youtube_extractor_args = {
+        "youtube": {"player_client": ["web_embedded"]},
+        "youtubepot-bgutilhttp": {"base_url": [bgutil_provider_url]},
+    }
+    remote_components = ["ejs:github"]
 
     if is_video_request:
         preferred_res = parse_requested_resolution(preferred_res)
@@ -38,14 +45,25 @@ def ydl_opts_builder(
                 max_file_size / 10
             )  # mp4 conversion is very compute hungry, so we need to be more strict with the file size limit
 
-        ydl_opts = {
-            "format": f"bestvideo[height<={preferred_res}][filesize<{max_file_size}M]+"
-            + f"bestaudio/best[height<={preferred_res}][filesize<{int(max_file_size/4)}M]",
-            "outtmpl": os.path.join(download_path, f"{title}-%(height)sp.%(ext)s"),
-            "windowsfilenames": True,
-            "quiet": not show_yt_dlp_output,
-            "postprocessors": [{"key": "FFmpegMetadata", "add_chapters": True}],
-        }
+        else:
+            ydl_opts = {
+                "format": f"bestaudio/best[filesize<{int(max_file_size)}M]",
+                "outtmpl": os.path.join(download_path, f"{title}"),
+                "windowsfilenames": True,
+                "quiet": not show_yt_dlp_output,
+                "writethumbnail": True,  # Required for EmbedThumbnail
+                "postprocessors": [
+                    {
+                        "key": "FFmpegExtractAudio",
+                        "preferredcodec": "mp3",
+                        "preferredquality": "192",
+                    },
+                    {"key": "FFmpegMetadata", "add_metadata": True},
+                    {"key": "EmbedThumbnail", "already_have_thumbnail": False},
+                ],
+                "extractor_args": youtube_extractor_args,
+                "remote_components": remote_components,
+            }
 
         if convert_to_mp4:
             # Insert conversion at the start of the list
@@ -71,6 +89,8 @@ def ydl_opts_builder(
                 # Converts webp/etc to jpg so Jellyfin's music scanner sees it
                 {"key": "EmbedThumbnail", "already_have_thumbnail": False},
             ],
+            "extractor_args": youtube_extractor_args,
+            "remote_components": remote_components,
         }
 
     return ydl_opts

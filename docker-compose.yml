@@ -1,4 +1,3 @@
-# all values can be changed to your liking, provided you know what you are doing
 services:
   ytflex:
     build: .
@@ -8,3 +7,10 @@ services:
       - "2002:2002"
     volumes:
       - /app/ytflex/:/app/mountpoint/
+    depends_on:
+      - bgutil-provider
+
+  bgutil-provider:
+    image: brainicism/bgutil-ytdlp-pot-provider
+    container_name: bgutil-provider
+    restart: always

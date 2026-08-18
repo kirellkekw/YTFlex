@@ -71,7 +71,7 @@ def download_files(
     filename_collector = FilenameCollectorPP()
     ydl = YoutubeDL(ydl_opts)
     ydl.add_post_processor(filename_collector)
-    ydl.download([video.url])
+    ydl.download([f"https://www.youtube.com/watch?v={link}"])
     last_downloaded_dir: str = filename_collector.filenames[-1]
     file_size = os.path.getsize(last_downloaded_dir)
     filename: str = os.path.basename(last_downloaded_dir)

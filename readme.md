@@ -40,18 +40,20 @@ cd YTFlex
 
 * Open the `config.yaml` file and change the settings according to your needs with a text editor.
 
-* Here's a quick explanation of what each setting does:
+* The following table describes the settings in the configuration file:
 
-| Setting              | Description                                              | Type        |
-| ---                  | ---                                                      | ---         |
-| `max_res`            | Maximum resolution the API can attempt to download.      | `int`       |
-| `max_file_size`      | The maximum file size in megabytes the API can download. | `int`       |
-| `root_path`          | Reverse proxied path to the API.                         | `str`       |
-| `port`               | The port the API server will listen on.                  | `int`       |
-| `ip_or_domain`       | The address API will use to create a CDN link.           | `str`       |
-| `max_file_age`       | Maximum age of a file in seconds before it gets deleted. | `int`       |
-| `show_yt_dlp_output` | Suppresses yt-dlp download output if set to False.       | `bool`      |
-| `allowed_domains`    | A list of allowed domains for CORS requests.             | `list[str]` |
+| Setting              | Description                                              | Type        | Default Value |
+| ---                  | ---                                                      | ---         | ---           |
+| `ROOT_PATH`          | Reverse proxied path to the API.                         | `str`       | `/ytflex`     |
+| `CDN_LOCATION`       | Reverse proxied path to the CDN.                         | `str`       | `/ytflex-cdn` |
+| `PORT`               | The port the API server will listen on.                  | `int`       | `2002`        |
+| `MAX_RES`            | Maximum resolution the API can attempt to download.      | `int`       | `2160`        |
+| `MAX_FILE_SIZE`      | The maximum file size in megabytes the API can download. | `int`       | `2000`        |
+| `IP_OR_DOMAIN`       | The address API will use to create a CDN link.           | `str`       | `https://arda0.net` |
+| `MAX_FILE_AGE`       | Maximum age of a file in seconds before it gets deleted. | `int`       | `3600`        |
+| `SHOW_YT_DLP_OUTPUT` | Suppresses yt-dlp download output if set to False.       | `bool`      | `true`        |
+| `ALLOWED_DOMAINS`    | A list of allowed domains for CORS requests.             | `list[str]` | `[https://ytflex.vercel.app, https://arda0.net]` |
+| `BGUTIL_PROVIDER_URL` | The URL of the bgutil provider for yt-dlp.              | `str`       | `http://bgutil-provider:4416` |
 
 ## 2.3- Edit the docker-compose file
 
