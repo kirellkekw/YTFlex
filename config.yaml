@@ -40,6 +40,19 @@ ALLOWED_DOMAINS: # type: list[str]
   - "https://ytflex.vercel.app"
   - "https://arda0.net"
 
+# SlowAPI limit for download endpoints.
+# https://slowapi.readthedocs.io/en/latest/#rate-limit-string-notation
+DOWNLOAD_RATE_LIMIT: "1/10 seconds;5/minute" # type: str
+
+# Only these immediate peers are allowed to provide forwarded IP headers.
+# Keep this list narrow and include your reverse proxy container/host IPs.
+TRUSTED_PROXIES: # type: list[str]
+  - "127.0.0.1"
+  - "172.17.0.1"
+  - "172.18.0.1"
+  - "172.19.0.1"
+  - "172.20.0.1"
+
 # don't change unless you know what you're doing
 # url to internal bgutil provider container, used for youtubepot-bgutilhttp extractor
 BGUTIL_PROVIDER_URL: "http://bgutil-provider:4416" # type: str

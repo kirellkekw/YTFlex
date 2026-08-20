@@ -53,6 +53,8 @@ cd YTFlex
 | `MAX_FILE_AGE`       | Maximum age of a file in seconds before it gets deleted. | `int`       | `3600`        |
 | `SHOW_YT_DLP_OUTPUT` | Suppresses yt-dlp download output if set to False.       | `bool`      | `true`        |
 | `ALLOWED_DOMAINS`    | A list of allowed domains for CORS requests.             | `list[str]` | `[https://ytflex.vercel.app, https://arda0.net]` |
+| `DOWNLOAD_RATE_LIMIT` | SlowAPI limits for `/download/*` routes.                | `str`       | `1/10 seconds;5/minute` |
+| `TRUSTED_PROXIES`    | Trusted peers allowed to set forwarded client IP headers. | `list[str]` | `[127.0.0.1, 172.17.0.1, ..., 172.20.0.1]` |
 | `BGUTIL_PROVIDER_URL` | The URL of the bgutil provider for yt-dlp.              | `str`       | `http://bgutil-provider:4416` |
 
 ## 2.3- Edit the docker-compose file

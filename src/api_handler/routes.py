@@ -4,9 +4,10 @@ All API routes for the YTFlex project.
 
 import os
 
+from fastapi import Request
 from fastapi.responses import FileResponse
 
-from src.api_handler.app import app
+from src.api_handler.app import app, download_rate_limit, limiter
 from src.downloader.runner import download_files
 
 __all__ = ["root", "audio_download", "video_download"]
@@ -31,7 +32,8 @@ async def root():
 
 
 @app.get("/download/audio")
-async def audio_download(link: str):
+@limiter.limit(download_rate_limit)
+async def audio_download(request: Request, link: str):  # pylint: disable=unused-argument
     """API route for downloading audio files."""
 
     # bundle the download info
@@ -41,7 +43,10 @@ async def audio_download(link: str):
 
 
 @app.get("/download/video")
-async def video_download(link: str, res: str | int, mp4: bool = False):
+@limiter.limit(download_rate_limit)
+async def video_download(
+    request: Request, link: str, res: str | int, mp4: bool = False
+):  # pylint: disable=unused-argument
     """API route for downloading video files."""
 
     raw_dl_info = download_files(
