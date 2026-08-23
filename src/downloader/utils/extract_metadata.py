@@ -32,7 +32,17 @@ def extract_info(url: str):
     # get the info we need
     try:
         title = info["title"]
-        title = title.replace("/", "-")  # replace / with - to avoid issues with file paths 
+        # SECURITY: DO NOT REMOVE. This line is the ONLY defense against path
+        # traversal via a crafted video title (e.g. a title containing "../../").
+        # ydl_opts_builder.py inserts this title directly into the outtmpl
+        # TEMPLATE STRING (an f-string), before yt-dlp ever parses it - so
+        # yt-dlp's own field sanitization (e.g. "windowsfilenames") never runs
+        # on it, since that only sanitizes %(field)s substitutions, not literal
+        # text already baked into the template. Confirmed by direct test: without
+        # this line, a title like "../../../etc/passwd" writes outside the
+        # download folder. Removing this line reopens that hole. See runner.py's
+        # DOWNLOAD_ROOT containment check for the (secondary, backstop) defense.
+        title = title.replace("/", "-")
     except KeyError:
         title = ""
     try:

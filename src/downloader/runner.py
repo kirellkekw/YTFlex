@@ -21,8 +21,11 @@ by having the logic here.
 
 
 import os
+from pathlib import Path
 from yt_dlp import YoutubeDL
 from src.downloader.utils.base import *
+
+DOWNLOAD_ROOT = Path("./mountpoint/downloads").resolve()
 
 
 def download_files(
@@ -63,6 +66,11 @@ def download_files(
     download_info = []
     video = extract_info(link)
 
+    if video is None:
+        return create_error_response(
+            "Video is unavailable. Please check your URL and try again."
+        )
+
     ydl_opts = ydl_opts_builder(
         video.title, is_video_request, preferred_res, convert_to_mp4
     )
@@ -73,6 +81,22 @@ def download_files(
     ydl.add_post_processor(filename_collector)
     ydl.download([f"https://www.youtube.com/watch?v={link}"])
     last_downloaded_dir: str = filename_collector.filenames[-1]
+
+    # Containment check: confirm yt-dlp actually wrote inside DOWNLOAD_ROOT.
+    # Title sanitization (see extract_metadata.py) is the primary defense against
+    # a crafted video title escaping the download folder; this is the backstop
+    # in case that sanitization is ever weakened, bypassed, or a future edit
+    # removes it without the reviewer noticing this line.
+    resolved_path = Path(last_downloaded_dir).resolve()
+    if DOWNLOAD_ROOT not in resolved_path.parents:
+        try:
+            os.remove(last_downloaded_dir)
+        except OSError:
+            pass
+        return create_error_response(
+            "Download rejected: resulting file path was outside the allowed directory."
+        )
+
     file_size = os.path.getsize(last_downloaded_dir)
     filename: str = os.path.basename(last_downloaded_dir)
     filedir: str = os.path.dirname(last_downloaded_dir)

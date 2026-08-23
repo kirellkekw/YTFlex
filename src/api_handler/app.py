@@ -19,12 +19,45 @@ origins = config.get("ALLOWED_DOMAINS")
 download_rate_limit = config.get("DOWNLOAD_RATE_LIMIT", "10/minute")
 
 
+def get_docker_gateway_ip() -> str | None:
+    """
+    Reads /proc/net/route to find the default gateway IP as seen from inside
+    this container. This is the Docker bridge gateway, which nginx (running on
+    the host) appears as when it reaches this container through Docker's
+    published-port path.
+
+    Docker can reassign this IP whenever the compose network is recreated
+    (e.g. after `docker compose down`), so we resolve it at each startup
+    instead of relying only on the hardcoded guesses in config.yaml, which go
+    stale.
+    """
+    try:
+        with open("/proc/net/route", encoding="ascii") as f:
+            for line in f.readlines()[1:]:
+                fields = line.strip().split()
+                if len(fields) < 3:
+                    continue
+                if fields[1] == "00000000":  # destination 0.0.0.0 = default route
+                    gateway_int = int(fields[2], 16)
+                    # /proc/net/route stores the gateway in little-endian hex
+                    gateway_bytes = gateway_int.to_bytes(4, byteorder="little")
+                    return ".".join(str(b) for b in gateway_bytes)
+    except (OSError, ValueError):
+        pass
+    return None
+
+
 def _load_trusted_proxies() -> set[str]:
     trusted_proxies = config.get("TRUSTED_PROXIES", ["127.0.0.1"])
     if not isinstance(trusted_proxies, list):
         raise ValueError("TRUSTED_PROXIES must be a list in config.yaml.")
 
     parsed_proxies = {str(proxy).strip() for proxy in trusted_proxies if str(proxy).strip()}
+
+    gateway_ip = get_docker_gateway_ip()
+    if gateway_ip:
+        parsed_proxies.add(gateway_ip)
+
     if not parsed_proxies:
         raise ValueError("TRUSTED_PROXIES cannot be empty in config.yaml.")
 

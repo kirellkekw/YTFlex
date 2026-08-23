@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:title" content="ytflex | FAQ">
+    <meta property="og:description" content="upload limits, retention, and data policy for ytflex.">
+    <meta property="og:site_name" content="ytflex">
+    <meta property="og:image" content="https://arda0.net/assets/favicon">
+    <meta property="og:url" content="https://arda0.net/ytflex/faq">
+    <link rel="icon" href="/assets/favicon">
+
+    <title>ytflex | FAQ</title>
+    <script src="https://arda0.net/assets/tailwind.min.js"></script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+
+        /* Slate 900 */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<header class="w-full max-w-2xl mx-auto px-4 py-8 flex justify-between items-end">
+    <div class="flex flex-col gap-1">
+        <a href="/ytflex/" target="_self"
+            class="text-[10px] font-bold text-blue-400 hover:text-blue-300 transition-colors tracking-[0.2em] uppercase flex items-center gap-2">
+            <span>←</span> back to ytflex
+        </a>
+        <h1 class="text-3xl font-black text-white tracking-tight">
+            ytflex
+        </h1>
+    </div>
+</header>
+
+<div class="max-w-2xl mx-auto px-4 mb-8">
+    <div class="h-[1px] w-full bg-gradient-to-r from-transparent via-slate-800 to-transparent"></div>
+</div>
+
+<main class="p-4 flex justify-center">
+    <div class="max-w-lg w-full space-y-4 pb-16">
+        <header class="mb-4 text-center">
+            <h1 class="text-2xl font-extrabold text-blue-400 tracking-tight mb-2">FAQ</h1>
+            <div class="h-1 w-12 bg-blue-500 mx-auto rounded-full"></div>
+        </header>
+
+        <div class="glass-panel p-6 rounded-2xl shadow-2xl space-y-2">
+            <h3 class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">How long does ytflex keep my file?</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+                ytflex keeps your file for 1 hour. After 1 hour, ytflex deletes the file. Download or save the file
+                before the hour ends.
+            </p>
+        </div>
+
+        <div class="glass-panel p-6 rounded-2xl shadow-2xl space-y-2">
+            <h3 class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">What are the limits?</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+                A downloaded file cannot be larger than 2GB. For video downloads, audio is added on top of this
+                limit, so the final file can be a little larger.
+            </p>
+            <p class="text-slate-300 text-sm leading-relaxed">
+                ytflex also limits how often you can request a download: 1 request per 10 seconds, and 5 requests
+                per minute, per IP address. If you go over this, ytflex rejects the request with an error. Wait a
+                short time, then try again.
+            </p>
+        </div>
+
+        <div class="glass-panel p-6 rounded-2xl shadow-2xl space-y-2">
+            <h3 class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">What data does ytflex collect?</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+                ytflex uses your IP address only to enforce the rate limit above. ytflex does not require an
+                account. ytflex does not collect your name or email. ytflex does not link your IP address to a
+                profile.
+            </p>
+        </div>
+
+        <div class="glass-panel p-6 rounded-2xl shadow-2xl space-y-2">
+            <h3 class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">How do I report abuse?</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+                To report a download, contact
+                <a href="mailto:me@arda0.net" class="text-blue-400 hover:text-blue-300 transition-colors">me@arda0.net</a>.
+            </p>
+        </div>
+    </div>
+</main>
+
+</html>

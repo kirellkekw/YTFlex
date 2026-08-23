@@ -8,21 +8,34 @@
     <meta property="og:title" content="ytflex | yet another youtube downloader">
     <meta property="og:description" content="dead simple youtube downloader. no accounts, 2gb limit, 1 hour retention.">
     <meta property="og:site_name" content="ytflex">
-    <meta property="og:image" content="https://arda0.net/assets/xp.gif">
+    <meta property="og:image" content="https://arda0.net/assets/favicon">
     <meta property="og:url" content="https://arda0.net/ytflex/">
+    <link rel="icon" href="/assets/favicon">
 
     <title>ytflex | simple youtube downloader</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://arda0.net/assets/tailwind.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
         }
 
-        body {
-            background: #0f172a;
-            color: #f8fafc;
+        /* Slate 900 */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Custom scrollbar for history */
+        #history-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        #history-list::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -34,28 +47,32 @@
             <span>←</span> back to home
         </a>
         <h1 class="text-3xl font-black text-white tracking-tight">
-            yt<span class="text-blue-500">flex</span>
+            ytflex
         </h1>
     </div>
+    <a href="/ytflex/faq" target="_self"
+        class="text-xs font-bold text-slate-500 hover:text-blue-400 transition-colors tracking-[0.15em] uppercase px-3 py-1.5">
+        FAQ
+    </a>
 </header>
 
 <div class="max-w-2xl mx-auto px-4 mb-8">
     <div class="h-[1px] w-full bg-gradient-to-r from-transparent via-slate-800 to-transparent"></div>
 </div>
 
-<main class="text-slate-200 p-4 items-center justify-center flex">
+<main class="p-4 items-center justify-center flex">
     <div class="max-w-lg w-full space-y-4">
-        <div class="glass-panel p-8 rounded-2xl shadow-2xl bg-slate-900/50 backdrop-blur-md border border-slate-700">
+        <div class="glass-panel p-8 rounded-2xl shadow-2xl">
             <header class="mb-8 text-center">
-                <h1 class="text-3xl font-extrabold text-indigo-400 tracking-tight mb-2">YTFlex</h1>
-                <div class="h-1 w-12 bg-indigo-500 mx-auto rounded-full"></div>
-                <p class="text-slate-400 mt-4 text-sm font-mono italic">premium youtube scraping solution.</p>
+                <h1 class="text-3xl font-extrabold text-white tracking-tight mb-2">YTFlex</h1>
+                <div class="h-1 w-12 bg-blue-500 mx-auto rounded-full"></div>
+                <p class="text-slate-400 mt-4 text-sm font-mono italic">dead simple youtube downloader. no accounts, 2gb limit, 1 hour retention.</p>
             </header>
 
             <div class="space-y-4">
                 <div class="relative">
                     <input type="text" id="urlInput" placeholder="Paste YouTube URL here..."
-                        class="w-full bg-black/40 border border-slate-700 rounded-xl px-4 py-4 text-sm text-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all">
+                        class="w-full bg-black/40 border border-slate-700 rounded-xl px-4 py-4 text-sm text-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all">
                 </div>
 
                 <div class="flex gap-3">
@@ -81,12 +98,12 @@
                 </div>
 
                 <div id="formatContainer" class="flex items-center gap-2 px-1">
-                    <input type="checkbox" id="mp4Check" class="w-4 h-4 rounded accent-indigo-500">
+                    <input type="checkbox" id="mp4Check" class="w-4 h-4 rounded accent-blue-500">
                     <label for="mp4Check" class="text-xs text-slate-400 cursor-pointer">Force MP4 Compatibility</label>
                 </div>
 
                 <button onclick="handleFetch()" id="dlBtn"
-                    class="w-full bg-indigo-600 hover:bg-indigo-500 font-bold py-4 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20">
+                    class="w-full bg-blue-600 hover:bg-blue-500 font-bold py-4 rounded-xl transition-all active:scale-[0.98] flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">
                     <i data-lucide="zap" class="w-4 h-4"></i> FETCH DOWNLOAD
                 </button>
             </div>
@@ -102,7 +119,7 @@
 
                 <div class="relative group mb-3">
                     <input type="text" id="finalUrlDisplay" readonly
-                        class="w-full bg-black/40 border border-slate-700 rounded-lg pl-3 pr-20 py-2.5 text-xs text-indigo-300 font-mono focus:outline-none">
+                        class="w-full bg-black/40 border border-slate-700 rounded-lg pl-3 pr-20 py-2.5 text-xs text-blue-300 font-mono focus:outline-none">
                     <button onclick="copyToClipboard(document.getElementById('finalUrlDisplay').value, this)"
                         class="absolute right-1.5 top-1.5 bottom-1.5 bg-slate-700 hover:bg-slate-600 text-white px-3 rounded text-[10px] font-bold transition-all">
                         COPY
@@ -116,16 +133,7 @@
             </div>
         </div>
 
-        <div class="flex justify-between items-center px-2">
-            <div id="apiStatus" class="flex items-center gap-2">
-                <div id="statusDot" class="w-1.5 h-1.5 rounded-full bg-yellow-500 animate-pulse"></div>
-                <span id="statusText" class="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Checking
-                    API...</span>
-            </div>
-            <p id="statusMsg" class="text-[10px] text-slate-500 italic">Ready</p>
-        </div>
-
-        <div id="history-container" class="glass-panel p-4 rounded-xl bg-slate-900/50 border border-slate-700 hidden">
+        <div id="history-container" class="glass-panel p-4 rounded-xl hidden">
             <h3 class="text-[10px] font-bold text-slate-500 uppercase mb-3 tracking-widest flex justify-between">
                 <span>Recent Downloads</span>
                 <button onclick="clearHistory()" class="hover:text-red-400 transition-colors">Clear</button>
@@ -157,7 +165,6 @@
 
         async function handleFetch() {
             const btn = document.getElementById('dlBtn');
-            const status = document.getElementById('statusMsg');
             const resultCard = document.getElementById('resultCard');
             const urlInput = document.getElementById('urlInput');
 
@@ -166,7 +173,6 @@
             // UI State: Loading
             btn.disabled = true;
             btn.innerHTML = `<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> FETCHING...`;
-            status.innerText = "Processing request...";
             resultCard.classList.add('hidden');
 
             const type = typeSelect.value;
@@ -197,13 +203,12 @@
                     dlLink.setAttribute('download', `${info.metadata.title}.${info.metadata.extension}`);
 
                     resultCard.classList.remove('hidden');
-                    status.innerText = "Download ready!";
 
                     // Save to History
                     saveToHistory(info.metadata.title, info.link, info.metadata.thumbnail);
                 }
             } catch (err) {
-                status.innerText = "Error: Server unreachable";
+                alert("Error: Server unreachable");
                 console.error(err);
             } finally {
                 btn.disabled = false;
@@ -230,21 +235,55 @@
                 return;
             }
             historyContainer.classList.remove('hidden');
-            historyList.innerHTML = history.map(item => `
-                <div class="flex items-center justify-between bg-black/30 p-2 rounded-lg border border-white/5 group">
-                    <div class="flex items-center gap-3 truncate pr-2">
-                        <img src="${item.thumb}" class="w-10 h-7 object-cover rounded shadow-sm">
-                        <div class="flex flex-col truncate">
-                            <span class="text-[11px] font-medium text-slate-300 truncate">${item.name}</span>
-                            <span class="text-[8px] text-slate-600 uppercase font-bold">${item.date}</span>
-                        </div>
-                    </div>
-                    <div class="flex gap-1">
-                        <a href="${item.url}" target="_blank" class="text-[9px] bg-indigo-900/40 hover:bg-indigo-800 px-2 py-1.5 rounded text-indigo-300 transition-colors font-bold">OPEN</a>
-                        <button onclick="copyToClipboard('${item.url}', this)" class="text-[9px] bg-slate-700 hover:bg-slate-600 px-2 py-1.5 rounded text-white transition-colors font-bold">COPY</button>
-                    </div>
-                </div>
-            `).join('');
+
+            // Built with DOM APIs (not innerHTML + string interpolation) on purpose:
+            // item.name/item.thumb come from the video's own metadata (title,
+            // thumbnail URL), which is not under our control. textContent and
+            // property assignment (img.src, a.href) never parse their input as
+            // markup, so a crafted title cannot inject HTML/script here.
+            historyList.replaceChildren(...history.map(item => {
+                const row = document.createElement('div');
+                row.className = 'flex items-center justify-between bg-black/30 p-2 rounded-lg border border-white/5 group';
+
+                const left = document.createElement('div');
+                left.className = 'flex items-center gap-3 truncate pr-2';
+
+                const img = document.createElement('img');
+                img.src = item.thumb;
+                img.className = 'w-10 h-7 object-cover rounded shadow-sm';
+
+                const textWrap = document.createElement('div');
+                textWrap.className = 'flex flex-col truncate';
+
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'text-[11px] font-medium text-slate-300 truncate';
+                nameSpan.textContent = item.name;
+
+                const dateSpan = document.createElement('span');
+                dateSpan.className = 'text-[8px] text-slate-600 uppercase font-bold';
+                dateSpan.textContent = item.date;
+
+                textWrap.append(nameSpan, dateSpan);
+                left.append(img, textWrap);
+
+                const right = document.createElement('div');
+                right.className = 'flex gap-1';
+
+                const openLink = document.createElement('a');
+                openLink.href = item.url;
+                openLink.target = '_blank';
+                openLink.className = 'text-[9px] bg-blue-900/40 hover:bg-blue-800 px-2 py-1.5 rounded text-blue-300 transition-colors font-bold';
+                openLink.textContent = 'OPEN';
+
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'text-[9px] bg-slate-700 hover:bg-slate-600 px-2 py-1.5 rounded text-white transition-colors font-bold';
+                copyBtn.textContent = 'COPY';
+                copyBtn.addEventListener('click', () => copyToClipboard(item.url, copyBtn));
+
+                right.append(openLink, copyBtn);
+                row.append(left, right);
+                return row;
+            }));
         }
 
         function clearHistory() {
@@ -266,26 +305,6 @@
                 console.error('Failed to copy', err);
             }
         }
-
-        // API Status Check
-        window.addEventListener('DOMContentLoaded', async () => {
-            const dot = document.getElementById('statusDot');
-            const text = document.getElementById('statusText');
-            try {
-                const response = await fetch(`${apiUrl}/root`);
-                if (response.ok) {
-                    dot.classList.replace('bg-yellow-500', 'bg-green-500');
-                    dot.classList.remove('animate-pulse');
-                    text.innerText = "API ONLINE";
-                    text.classList.replace('text-slate-500', 'text-green-500');
-                }
-            } catch (err) {
-                dot.classList.replace('bg-yellow-500', 'bg-red-500');
-                dot.classList.remove('animate-pulse');
-                text.innerText = "API OFFLINE";
-                text.classList.replace('text-slate-500', 'text-red-500');
-            }
-        });
     </script>
 </main>
 

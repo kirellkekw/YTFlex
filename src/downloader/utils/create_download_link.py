@@ -20,7 +20,7 @@ def create_download_link(filedir: str, filename: str) -> str:
     cdn_location = os.getenv("cdn_location", config.get("CDN_LOCATION"))
 
     random_string = "".join(
-        random.choices("abcdefghijklmnopqrstuvwxyz0123456789", k=12)
+        random.choices("abcdefghijklmnopqrstuvwxyz0123456789", k=8)
     )
     os.makedirs(
         os.path.join(filedir, random_string), exist_ok=True

@@ -10,7 +10,7 @@ from fastapi.responses import FileResponse
 from src.api_handler.app import app, download_rate_limit, limiter
 from src.downloader.runner import download_files
 
-__all__ = ["root", "audio_download", "video_download"]
+__all__ = ["root", "faq", "audio_download", "video_download"]
 
 
 @app.get("/")
@@ -29,6 +29,14 @@ async def root():
     """To check if the server is running without much hassle."""
 
     return {"message": "Hello World"}
+
+
+@app.get("/faq")
+async def faq():
+    """FAQ page: retention, limits, and data collection policy."""
+    file_path = os.path.join(os.path.dirname(__file__), "..", "..", "faq.html")
+
+    return FileResponse(file_path)
 
 
 @app.get("/download/audio")
