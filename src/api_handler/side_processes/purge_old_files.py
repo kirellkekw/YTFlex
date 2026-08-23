@@ -8,6 +8,7 @@ import time
 from pathlib import Path
 
 import config
+from src.db_handler.bandwidth import prune_old_records as prune_bandwidth_records
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -28,6 +29,13 @@ async def purge_old_files():
         except Exception:
             # Never let one bad iteration kill the background task permanently
             logger.exception("Error while purging old files")
+
+        try:
+            # Scrubs the IP on bandwidth-tracking rows older than 7 days
+            # (see src/db_handler/bandwidth.py) - cheap no-op most runs.
+            prune_bandwidth_records()
+        except Exception:
+            logger.exception("Error while pruning bandwidth records")
 
         await asyncio.sleep(CHECK_INTERVAL_SECONDS)
 

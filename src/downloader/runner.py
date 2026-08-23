@@ -24,6 +24,7 @@ import os
 from pathlib import Path
 from yt_dlp import YoutubeDL
 from src.downloader.utils.base import *
+from src.db_handler.bandwidth import record_download
 
 DOWNLOAD_ROOT = Path("./mountpoint/downloads").resolve()
 
@@ -33,6 +34,7 @@ def download_files(
     is_video_request: bool,
     preferred_res: str = "1080",
     convert_to_mp4: bool = False,
+    client_ip: str | None = None,
 ):
     """
     Downloads files from youtube using yt-dlp.
@@ -98,6 +100,16 @@ def download_files(
         )
 
     file_size = os.path.getsize(last_downloaded_dir)
+
+    # Historical bandwidth dataset - see src/db_handler/bandwidth.py for the
+    # 7-day IP-scrub retention behavior. Never let a logging failure break
+    # an otherwise-successful download.
+    if client_ip:
+        try:
+            record_download(client_ip, file_size)
+        except Exception:  # pylint: disable=broad-except
+            pass
+
     filename: str = os.path.basename(last_downloaded_dir)
     filedir: str = os.path.dirname(last_downloaded_dir)
     cdn_link: str = create_download_link(filedir, filename)

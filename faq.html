@@ -52,17 +52,22 @@
             <div class="h-1 w-12 bg-blue-500 mx-auto rounded-full"></div>
         </header>
 
-        <div class="glass-panel p-6 rounded-2xl shadow-2xl space-y-2">
-            <h3 class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">How long does ytflex keep my file?</h3>
-            <p class="text-slate-300 text-sm leading-relaxed">
+        <div id="faq-list" class="space-y-4"></div>
+    </div>
+</main>
+
+<script>
+    const faqs = [
+        {
+            q: 'How long does ytflex keep my file?',
+            a: `<p class="text-slate-300 text-sm leading-relaxed">
                 ytflex keeps your file for 1 hour. After 1 hour, ytflex deletes the file. Download or save the file
                 before the hour ends.
-            </p>
-        </div>
-
-        <div class="glass-panel p-6 rounded-2xl shadow-2xl space-y-2">
-            <h3 class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">What are the limits?</h3>
-            <p class="text-slate-300 text-sm leading-relaxed">
+            </p>`,
+        },
+        {
+            q: 'What are the limits?',
+            a: `<p class="text-slate-300 text-sm leading-relaxed">
                 A downloaded file cannot be larger than 2GB. For video downloads, audio is added on top of this
                 limit, so the final file can be a little larger.
             </p>
@@ -70,26 +75,63 @@
                 ytflex also limits how often you can request a download: 1 request per 10 seconds, and 5 requests
                 per minute, per IP address. If you go over this, ytflex rejects the request with an error. Wait a
                 short time, then try again.
-            </p>
-        </div>
-
-        <div class="glass-panel p-6 rounded-2xl shadow-2xl space-y-2">
-            <h3 class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">What data does ytflex collect?</h3>
-            <p class="text-slate-300 text-sm leading-relaxed">
+            </p>`,
+        },
+        {
+            q: 'What data does ytflex collect?',
+            a: `<p class="text-slate-300 text-sm leading-relaxed">
                 ytflex uses your IP address only to enforce the rate limit above. ytflex does not require an
                 account. ytflex does not collect your name or email. ytflex does not link your IP address to a
                 profile.
             </p>
-        </div>
-
-        <div class="glass-panel p-6 rounded-2xl shadow-2xl space-y-2">
-            <h3 class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">How do I report abuse?</h3>
+            <p class="text-slate-300 text-sm leading-relaxed">
+                ytflex does not keep your IP address forever. Once its cooldown passes, ytflex removes it. ytflex
+                never links your IP address to the video you downloaded, so there is no way to tie a download
+                back to the person who requested it.
+            </p>`,
+        },
+        {
+            q: 'Who is responsible for what I download?',
+            a: `<p class="text-slate-300 text-sm leading-relaxed">
+                ytflex simplifies downloading content from the internet. ytflex takes zero liability for what
+                the downloaded content is used for.
+            </p>
+            <p class="text-slate-300 text-sm leading-relaxed">
+                You, the end user, are responsible for what you do with ytflex and how you use or distribute
+                the resulting content. Be mindful when using content made by others, and credit the original
+                creator. Make sure you do not violate any terms or licenses.
+            </p>`,
+        },
+        {
+            q: 'How do I report abuse?',
+            a: `<p class="text-slate-300 text-sm leading-relaxed">
+                ytflex has no way of detecting abusive behavior automatically, because ytflex is fully
+                anonymous.
+            </p>
             <p class="text-slate-300 text-sm leading-relaxed">
                 To report a download, contact
                 <a href="mailto:me@arda0.net" class="text-blue-400 hover:text-blue-300 transition-colors">me@arda0.net</a>.
-            </p>
-        </div>
-    </div>
-</main>
+                We will do our best to comply manually.
+            </p>`,
+        },
+    ];
+
+    const faqList = document.getElementById('faq-list');
+
+    // faqs is a fixed, hardcoded array above (not user input), so building the
+    // answer body via innerHTML here is safe.
+    faqs.forEach(f => {
+        const card = document.createElement('div');
+        card.className = 'glass-panel p-6 rounded-2xl shadow-2xl space-y-2';
+
+        const h3 = document.createElement('h3');
+        h3.className = 'text-[10px] font-bold text-blue-400 uppercase tracking-widest';
+        h3.textContent = f.q;
+
+        card.appendChild(h3);
+        card.insertAdjacentHTML('beforeend', f.a);
+        faqList.appendChild(card);
+    });
+</script>
 
 </html>

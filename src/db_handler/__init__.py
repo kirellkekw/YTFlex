@@ -15,6 +15,14 @@ _db_string = config.get(
     f"sqlite:///{Path(__file__).resolve().parent.parent.parent.as_posix()}"
     + "/mountpoint/database/ytflex_database.db",
 )  # unstylish but os agnostic
+
+# sqlite won't create a missing parent directory on its own - nothing else
+# in this project creates mountpoint/database/, so do it here before the
+# engine tries to open a connection. Guarded to sqlite:/// URLs only, since
+# database_url can be overridden to something else entirely via config.
+if _db_string.startswith("sqlite:///"):
+    Path(_db_string.removeprefix("sqlite:///")).parent.mkdir(parents=True, exist_ok=True)
+
 # Create the database engine
 _engine = create_engine(_db_string)
 

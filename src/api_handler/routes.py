@@ -7,7 +7,7 @@ import os
 from fastapi import Request
 from fastapi.responses import FileResponse
 
-from src.api_handler.app import app, download_rate_limit, limiter
+from src.api_handler.app import app, download_rate_limit, get_client_ip, limiter
 from src.downloader.runner import download_files
 
 __all__ = ["root", "faq", "audio_download", "video_download"]
@@ -41,24 +41,28 @@ async def faq():
 
 @app.get("/download/audio")
 @limiter.limit(download_rate_limit)
-async def audio_download(request: Request, link: str):  # pylint: disable=unused-argument
+async def audio_download(request: Request, link: str):
     """API route for downloading audio files."""
 
     # bundle the download info
-    raw_dl_info = download_files(passed_url=link, is_video_request=False)
+    raw_dl_info = download_files(
+        passed_url=link, is_video_request=False, client_ip=get_client_ip(request)
+    )
 
     return raw_dl_info
 
 
 @app.get("/download/video")
 @limiter.limit(download_rate_limit)
-async def video_download(
-    request: Request, link: str, res: str | int, mp4: bool = False
-):  # pylint: disable=unused-argument
+async def video_download(request: Request, link: str, res: str | int, mp4: bool = False):
     """API route for downloading video files."""
 
     raw_dl_info = download_files(
-        passed_url=link, is_video_request=True, preferred_res=res, convert_to_mp4=mp4
+        passed_url=link,
+        is_video_request=True,
+        preferred_res=res,
+        convert_to_mp4=mp4,
+        client_ip=get_client_ip(request),
     )
 
     return raw_dl_info

@@ -13,6 +13,7 @@ from sqlalchemy import (
     DateTime,
     Boolean,
     SmallInteger,
+    Float,
 )
 from sqlalchemy.orm import Session
 from src.db_handler import _Base, _engine
@@ -20,6 +21,7 @@ from src.db_handler import _Base, _engine
 __all__ = [
     "DownloadLog",
     "Api_Key",
+    "BandwidthRecord",
 ]  # classes the objects of which are to be used in the code
 
 
@@ -79,6 +81,25 @@ class Api_Key(_Base):
     last_ip = Column(String(20))
     usage_count = Column(Integer, default=0, autoincrement=True)
     expires_at = Column(DateTime, default=_default_expiration)
+
+
+@dataclass
+class BandwidthRecord(_Base):
+    """
+    One row per successful download: how many bytes, from which IP, when.
+
+    Mirrors suncdn's UploadRecord/quota.py pattern - this is a historical
+    bandwidth dataset (so a slow trickle of many small downloads shows up
+    as an anomaly over time), not a per-request quota enforcer. See
+    bandwidth.py's prune_old_records() for the same "scrub IP after 7 days,
+    keep the row" retention behavior used there.
+    """
+
+    __tablename__ = "ytflex_bandwidth_records"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    ip = Column(String(45), nullable=False, index=True)
+    bytes = Column(Integer, nullable=False)
+    timestamp = Column(Float, nullable=False, index=True)
 
 
 # Create all tables in the database
